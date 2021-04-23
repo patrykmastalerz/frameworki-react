@@ -109,7 +109,7 @@ const TopBar: FC = () => {
 	const menuHandler = () => {
 		toggleDropdown();
 	}
-
+ 
   return (
     <Wrapper2>
      	<InnerWrapper>
