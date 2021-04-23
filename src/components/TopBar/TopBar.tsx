@@ -115,7 +115,7 @@ const TopBar: FC = () => {
      	<InnerWrapper>
 			<LeftMenu>
 				<LogoImg  src="./media/logo.png"/>
-
+ 
 				<MenuWrapper ref={wrapperRef}  >
 					<MenuSelectedOptionWrapper onClick={menuHandler}>
 						<MenuSelectedOption>
