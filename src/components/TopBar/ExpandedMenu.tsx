@@ -64,6 +64,7 @@ const UserAvatar = styled.div`
   background-color: blue;
   width: 30px;
   height: 30px;
+
   
 `;
 
