@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, FC, useState } from 'react';
 import styled from 'styled-components';
 import {Colors} from '../../styledHelpers/Colors';
 import {fontSize} from '../../styledHelpers/FontSizes';
-
+import { 
+  Link
+} from "react-router-dom"
 
 
 
@@ -18,17 +20,16 @@ const Wrapper = styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-  }
+  };
 
   li {
-    padding: 0px 5px;
     height: 35px;
-    display: flex;
-    align-items: center;
+    /* display: flex; */
+    /* align-items: center; */
     font-size: ${fontSize[14]};
     font-weight: bold;
-    /* background-color: red; */
-  }
+    /* background-color: yellow; */
+  };
 
 `;
 
@@ -81,71 +82,155 @@ const AccountWrapper = styled.div`
   border-top: 1px solid ${Colors.grey};
 `;
 
+const CustomLink = styled(Link)`
+ color: black;
+ text-decoration: none;
+ /* display: block; */
+ width: 100%;
+ height: 100%;
+ display: flex;
+ align-items: center;
+
+`
+
 
 const ExpandedMenu: FC = () => {
+
+  const [inputText, setInputText] = useState<string>('');
+
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setInputText(text);
+  }
+
   return (
     <Wrapper>
-        <FilterInput placeholder="Filter..."/>
+        <FilterInput placeholder="Filter..." value={inputText} onChange={inputHandler}/>
         <Header>Platform</Header>
         <ul>
+            {
+              'Home'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/">
+                  <Icon src="./media/house.png" />
+                    Home
+                </CustomLink>
+              </li>
+            }
+
+            {
+              'Publications'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/publications.png" />
+                  Publications
+                </CustomLink>
+              </li>
+            }
+
+            {
+              'People'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+              <CustomLink to="/NotFound">
+                  <Icon src="./media/people.png" />
+                  People
+                </CustomLink>
+              </li>
+            }
+
+            {
+              'Entities'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/entities.png" />
+                  Entities
+                </CustomLink>
+              </li>
+            }     
+
+            {
+              'Administration'.toLowerCase().includes(inputText.toLowerCase()) &&
             <li>
-                <Icon src="./media/house.png" />
-                <span>Home</span>
+              <CustomLink to="/NotFound">
+                <Icon src="./media/administration.png" />
+                Administration
+              </CustomLink>
             </li>
-            <li>
-              <Icon src="./media/publications.png" />
-              Publications
-            </li>
-            <li>
-              <Icon src="./media/people.png" />
-              People
-            </li>
-            <li>
-              <Icon src="./media/entities.png" />
-              Entities
-            </li>
-            <li>
-              <Icon src="./media/administration.png" />
-              Administration
-            </li>
+            }
         </ul>
         <Header>Workspaces</Header>
         <ul>
+
+            {
+              'Client contract'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/entities.png" />
+                  Client contract
+                </CustomLink>
+              </li>
+            }
+
+            {
+              'Supplier contract'.toLowerCase().includes(inputText.toLowerCase()) &&      
             <li>
-            <Icon src="./media/entities.png" />
-              Client contract
+              <CustomLink to="/NotFound">
+                <Icon src="./media/entities.png" />
+                Supplier contract
+              </CustomLink>
             </li>
-            <li>
-              <Icon src="./media/entities.png" />
-              Supplier contract
-            </li>
-            <li>
-              <Icon src="./media/entities2.png" />
-              Corporate
-            </li>
-            <li>
-              <Icon src="./media/entities2.png" />
-              Group norms
-            </li>
-            <li>
-              <Icon src="./media/entities2.png" />
-              Real estate contracts
-            </li>
+            }
+
+            {
+              'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/entities2.png" />
+                  Corporate
+                </CustomLink>
+              </li>
+            }
+
+            {
+              'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/entities2.png" />
+                  Group norms
+                </CustomLink>
+              </li>
+            }
+
+            {
+              'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
+              <li>
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/entities2.png" />
+                  Real estate contracts
+                </CustomLink>
+              </li>
+            }
         </ul>
         <AccountWrapper>
           <Header>Account</Header>
           <ul>
               <li>
-                <UserAvatar  />
-                Jakies imie
+                <CustomLink to="/NotFound">
+                  <UserAvatar  />
+                  Jakies imie
+                </CustomLink>
               </li>
               <li>
-                <Icon src="./media/privacy.png" />
-                Privacy
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/privacy.png" />
+                  Privacy
+                </CustomLink>
               </li>
               <li>
-                <Icon src="./media/settings.png" />
-                Settings
+                <CustomLink to="/NotFound">
+                  <Icon src="./media/settings.png" />
+                  Settings
+                </CustomLink>
               </li>
           </ul>
         </AccountWrapper>

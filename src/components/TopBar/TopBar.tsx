@@ -35,8 +35,6 @@ const ImgBackground = styled.div<{showBg: boolean}>`
 	`}
 `
 
-let a = `Ala ma ${6} kotów`
-
 const InputWrapper = styled.div`
 	width: 500px;
 	display: flex;
@@ -128,6 +126,7 @@ const TopBar: FC = () => {
 					{dropdownOpen &&
 					<ExpandedMenu/>
 					}
+
 					
 				</MenuWrapper>
 			</LeftMenu>

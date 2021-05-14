@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import {Colors} from '../../styledHelpers/Colors';
 import {fontSize} from '../../styledHelpers/FontSizes';
 import {ColumnWrapper} from '../../styledHelpers/ColumnWrapper';
-
+import { 
+	Link
+  } from "react-router-dom"
 
 
 const Wrapper = styled(ColumnWrapper)`
-  width: 200px;
+  min-width: 250px;
 `;
 
 const InnerWrapper = styled(ColumnWrapper)`
@@ -55,7 +57,7 @@ const UserOptionWrapper = styled.div`
 	align-items: center;
 	width: 80%;
     color: ${Colors.black};
-	padding: 10px;
+	padding: 8px;
 
 `;
 
@@ -97,7 +99,15 @@ const OptionsWrapper = styled(ColumnWrapper)`
 	background-color: transparent;
 `;
 
-
+const CustomLink = styled(Link)`
+ color: black;
+ text-decoration: none;
+ width: 100%;
+ height: 30px;
+ display: flex;
+ align-items: center;
+  /* background-color: blue; */
+`
 
 
 const LeftMenu: FC = () => {
@@ -115,46 +125,56 @@ const LeftMenu: FC = () => {
 				</UserProfileWrapper>
 				<UserOptionsWrapper>
 					<UserOptionWrapper>
-						<CustomImg src="./media/network.png"/>
-						<UserOptionDescription>
-							Your network
-						</UserOptionDescription>
-						<ImgBorder>
-							<CustomImg src="./media/user-plus.png"/>
-						</ImgBorder>
+						<CustomLink to="/NotFound">
+							<CustomImg src="./media/network.png"/>
+							<UserOptionDescription>
+								Your network
+							</UserOptionDescription>
+							<ImgBorder>
+								<CustomImg src="./media/user-plus.png"/>
+							</ImgBorder>
+						</CustomLink>
 					</UserOptionWrapper>
 					<UserOptionWrapper>
-						<CustomImg src="./media/publications.png"/>
-						<UserOptionDescription>
-							Your network
-						</UserOptionDescription>
-						<ImgBorder>
-							<CustomImg src="./media/plus.png"/>
-						</ImgBorder>
+						<CustomLink to="/NotFound">
+							<CustomImg src="./media/publications.png"/>
+							<UserOptionDescription>
+								Your network
+							</UserOptionDescription>
+							<ImgBorder>
+								<CustomImg src="./media/plus.png"/>
+							</ImgBorder>
+						</CustomLink>
 					</UserOptionWrapper>
 				</UserOptionsWrapper>
       	</InnerWrapper>
 			<OptionsWrapper>
 
 				<OptionWrapper>
-					<OptionImg src="./media/publications.png"/>
-					<OptionDescription>
-						Publications
-					</OptionDescription>
+					<CustomLink to="/">
+						<OptionImg src="./media/publications.png"/>
+							<OptionDescription>
+									Publications
+							</OptionDescription>
+					</CustomLink>
 				</OptionWrapper>
 
 				<OptionWrapper>
-					<OptionImg src="./media/ecosystem.png"/>
-					<OptionDescription>
-						Ecosystems
-					</OptionDescription>
+					<CustomLink to="/NotFound">
+						<OptionImg src="./media/ecosystem.png"/>
+						<OptionDescription>
+								Ecosystems
+						</OptionDescription>
+					</CustomLink>	
 				</OptionWrapper>
 				
 				<OptionWrapper>
-					<OptionImg src="./media/entities2.png"/>
-					<OptionDescription>
-						Entities
-					</OptionDescription>
+					<CustomLink to="/entities">
+						<OptionImg src="./media/entities2.png"/>
+						<OptionDescription>
+								Entities
+						</OptionDescription>
+					</CustomLink>
 				</OptionWrapper>
       	</OptionsWrapper>
     </Wrapper>
