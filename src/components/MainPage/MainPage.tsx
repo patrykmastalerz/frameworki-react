@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import {Colors} from '../../styledHelpers/Colors';
 
@@ -8,14 +8,19 @@ import LeftMenu from '../LeftMenu/LeftMenu';
 import Home from '../Home/Home';
 import Profile from './Profile';
 import Entities from './Entities';
+import WorkspacePage from '../Workspace/WorkspacePage';
 import NotFound from './NotFound';
 
 import { 
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom"
+import { useDispatch } from 'react-redux';
+import { getUsers } from '../../actions/usersActions';
+import { getComments } from '../../actions/commentActions';
+import ResumeWork from '../Home/ResumeWork';
+import { getPhotos } from '../../actions/photoActions';
 
 
 const Wrapper = styled.section`
@@ -44,13 +49,29 @@ const routes = [
     component: Entities
   },
   {
+    path: "/workspace",
+    component: WorkspacePage
+  },
+  {
     path: "/*",
     component: NotFound
   }
 ];
 
+type GetUsers = ReturnType<typeof getUsers>
+type GetComments = ReturnType<typeof getComments>
+type GetPhotos = ReturnType<typeof getPhotos>
+
 const MainPage: FC = () => {
 
+  //czy to musi byc?
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch<GetUsers>(getUsers());
+    dispatch<GetComments>(getComments());
+    dispatch<GetPhotos>(getPhotos());
+  }, [])
 
 
   return (

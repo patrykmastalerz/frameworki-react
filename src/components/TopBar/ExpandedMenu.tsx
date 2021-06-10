@@ -5,6 +5,9 @@ import {fontSize} from '../../styledHelpers/FontSizes';
 import { 
   Link
 } from "react-router-dom"
+import { useSelector } from 'react-redux';
+import { IState } from '../../reducers';
+import { IUserReducer } from '../../reducers/userReducers';
 
 
 
@@ -95,6 +98,10 @@ const CustomLink = styled(Link)`
 
 
 const ExpandedMenu: FC = () => {
+  const { usersList } = useSelector<IState, IUserReducer>(state => ({
+    ...state.users
+  }));
+
 
   const [inputText, setInputText] = useState<string>('');
 
@@ -105,6 +112,7 @@ const ExpandedMenu: FC = () => {
 
   return (
     <Wrapper>
+        {console.log(usersList)}
         <FilterInput placeholder="Filter..." value={inputText} onChange={inputHandler}/>
         <Header>Platform</Header>
         <ul>
@@ -217,7 +225,7 @@ const ExpandedMenu: FC = () => {
               <li>
                 <CustomLink to="/NotFound">
                   <UserAvatar  />
-                  Jakies imie
+                  {/* {usersList[0].name} */}
                 </CustomLink>
               </li>
               <li>

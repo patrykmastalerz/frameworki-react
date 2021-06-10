@@ -102,7 +102,7 @@ const LeftMenu = styled.div`
 
 
 const TopBar: FC = () => {
-	const [wrapperRef, dropdownOpen, toggleDropdown, closeDropdown] = useDropdown();
+	const [wrapperRef, dropdownOpen, toggleDropdown /* closeDropdown */] = useDropdown();
 
 	const menuHandler = () => {
 		toggleDropdown();

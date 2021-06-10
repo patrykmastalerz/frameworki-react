@@ -1,5 +1,8 @@
 import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { IState } from '../../reducers';
+import { ICommentReducer } from '../../reducers/commentReducers';
 import {Colors} from '../../styledHelpers/Colors';
 import {fontSize} from '../../styledHelpers/FontSizes';
 
@@ -125,6 +128,11 @@ const UpdateDate = styled.span`
 `
 
 const ResumeWork: FC = () => {
+    const { comments } :any  = useSelector<IState, ICommentReducer>(state => ({
+        ...state.comments
+      }));
+
+
   return (
     <Wrapper>
         <TopBar>

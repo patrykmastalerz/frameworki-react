@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import {Colors} from '../../styledHelpers/Colors';
 import {fontSize} from '../../styledHelpers/FontSizes';
-
+import { 
+	Link
+  } from "react-router-dom"
 
 
 
@@ -55,8 +57,9 @@ const WorkspaceHeaderImg = styled.div`
     height: 80px;
     width: 80px;
     background-color: green;
-    position: absolute;
-    bottom: 0px;
+    position: relative;
+    bottom: 30px;
+    margin-right: 10px;
     left: 10px;
 `
 
@@ -85,106 +88,170 @@ const UpdateData = styled.span`
     color: ${Colors.greyLight};
 `
 
+const CustomLink = styled(Link)`
+ color: black;
+ text-decoration: none;
+  display: block;
+`
+
 
 const Workspace: FC = () => {
+    const workspaces = [
+        {
+            title: "Client contract",
+            users: "150",
+            
+        },
+        {
+            title: "Supplier contract",
+            users: "50",
+        },
+        {
+            title: "Corporate",
+            users: "20",
+        },
+        {
+            title: "Group numbers",
+            users: "410",
+        }
+      ];
+
+
+
   return (
     <Wrapper>
         <Header>Workspaces</Header>
         <InnerWrapper>
-            <WorkspaceWrapper>
-                <WorkspaceImg/>
-                <WorkspaceHeaderWrapper>
-                    <WorkspaceHeaderImg/>
-                    <span>Client Contract</span>
-                </WorkspaceHeaderWrapper>
-                <WorkspaceDetailsWrapper>
-                    <DetailWrapper>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            Contract
-                        </span>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            150 users
-                        </span>
-                    </DetailWrapper>
-                    <UpdateData>
-                        Last updated 2 days ago
-                    </UpdateData>
-                </WorkspaceDetailsWrapper>
-            </WorkspaceWrapper>
 
-            <WorkspaceWrapper>
-                <WorkspaceImg/>
-                <WorkspaceHeaderWrapper>
-                    <WorkspaceHeaderImg/>
-                    <span>Client Contract</span>
-                </WorkspaceHeaderWrapper>
-                <WorkspaceDetailsWrapper>
-                    <DetailWrapper>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            Contract
-                        </span>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            150 users
-                        </span>
-                    </DetailWrapper>
-                    <UpdateData>
-                        Last updated 2 days ago
-                    </UpdateData>
-                </WorkspaceDetailsWrapper>
-            </WorkspaceWrapper>
-
-            <WorkspaceWrapper>
-                <WorkspaceImg/>
-                <WorkspaceHeaderWrapper>
-                    <WorkspaceHeaderImg/>
-                    <span>Client Contract</span>
-                </WorkspaceHeaderWrapper>
-                <WorkspaceDetailsWrapper>
-                    <DetailWrapper>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            Contract
-                        </span>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            150 users
-                        </span>
-                    </DetailWrapper>
-                    <UpdateData>
-                        Last updated 2 days ago
-                    </UpdateData>
-                </WorkspaceDetailsWrapper>
-            </WorkspaceWrapper>
-
-            <WorkspaceWrapper>
-                <WorkspaceImg/>
-                <WorkspaceHeaderWrapper>
-                    <WorkspaceHeaderImg/>
-                    <span>Client Contract</span>
-                </WorkspaceHeaderWrapper>
-                <WorkspaceDetailsWrapper>
-                    <DetailWrapper>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            Contract
-                        </span>
-                        <WorkspaceIcon src="./media/network.png"/>
-                        <span>
-                            150 users
-                        </span>
-                    </DetailWrapper>
-                    <UpdateData>
-                        Last updated 2 days ago
-                    </UpdateData>
-                </WorkspaceDetailsWrapper>
-            </WorkspaceWrapper>
+            {workspaces.map((workspace, index) => (
+                <CustomLink to={
+                        {   pathname: '/workspace',
+                            state: {
+                                title: workspace.title
+                            } 
+                        }
+                    }>
+                    <WorkspaceWrapper key={index}>
+                        <WorkspaceImg/>
+                        <WorkspaceHeaderWrapper>
+                            <WorkspaceHeaderImg/>
+                            <span>{workspace.title}</span>
+                        </WorkspaceHeaderWrapper>
+                        <WorkspaceDetailsWrapper>
+                            <DetailWrapper>
+                                <WorkspaceIcon src="./media/network.png"/>
+                                <span>
+                                    Contract
+                                </span>
+                                <WorkspaceIcon src="./media/network.png"/>
+                                <span>
+                                    {workspace.users} users
+                                </span>
+                            </DetailWrapper>
+                            <UpdateData>
+                                Last updated 2 days ago
+                            </UpdateData>
+                        </WorkspaceDetailsWrapper>
+                    </WorkspaceWrapper>
+                </CustomLink>     
+            ))}
+            
+           
         </InnerWrapper>
     </Wrapper>
   );
 }
 
 export default Workspace;
+
+{/* <WorkspaceWrapper>
+<WorkspaceImg/>
+<WorkspaceHeaderWrapper>
+    <WorkspaceHeaderImg/>
+    <span>Client Contract</span>
+</WorkspaceHeaderWrapper>
+<WorkspaceDetailsWrapper>
+    <DetailWrapper>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            Contract
+        </span>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            150 users
+        </span>
+    </DetailWrapper>
+    <UpdateData>
+        Last updated 2 days ago
+    </UpdateData>
+</WorkspaceDetailsWrapper>
+</WorkspaceWrapper>
+
+<WorkspaceWrapper>
+<WorkspaceImg/>
+<WorkspaceHeaderWrapper>
+    <WorkspaceHeaderImg/>
+    <span>Client Contract</span>
+</WorkspaceHeaderWrapper>
+<WorkspaceDetailsWrapper>
+    <DetailWrapper>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            Contract
+        </span>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            150 users
+        </span>
+    </DetailWrapper>
+    <UpdateData>
+        Last updated 2 days ago
+    </UpdateData>
+</WorkspaceDetailsWrapper>
+</WorkspaceWrapper>
+
+<WorkspaceWrapper>
+<WorkspaceImg/>
+<WorkspaceHeaderWrapper>
+    <WorkspaceHeaderImg/>
+    <span>Client Contract</span>
+</WorkspaceHeaderWrapper>
+<WorkspaceDetailsWrapper>
+    <DetailWrapper>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            Contract
+        </span>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            150 users
+        </span>
+    </DetailWrapper>
+    <UpdateData>
+        Last updated 2 days ago
+    </UpdateData>
+</WorkspaceDetailsWrapper>
+</WorkspaceWrapper>
+
+<WorkspaceWrapper>
+<WorkspaceImg/>
+<WorkspaceHeaderWrapper>
+    <WorkspaceHeaderImg/>
+    <span>Client Contract</span>
+</WorkspaceHeaderWrapper>
+<WorkspaceDetailsWrapper>
+    <DetailWrapper>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            Contract
+        </span>
+        <WorkspaceIcon src="./media/network.png"/>
+        <span>
+            150 users
+        </span>
+    </DetailWrapper>
+    <UpdateData>
+        Last updated 2 days ago
+    </UpdateData>
+</WorkspaceDetailsWrapper>
+</WorkspaceWrapper> */}
