@@ -7,7 +7,7 @@ import TopBar from '../TopBar/TopBar';
 import LeftMenu from '../LeftMenu/LeftMenu';
 import Home from '../Home/Home';
 import Profile from './Profile';
-import Entities from './Entities';
+import Entities from '../Entity/Entities';
 import WorkspacePage from '../Workspace/WorkspacePage';
 import NotFound from './NotFound';
 

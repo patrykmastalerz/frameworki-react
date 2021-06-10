@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IState } from '../../reducers';
 import { IPhotoReducer } from '../../reducers/photoReducers';
 import {Colors} from '../../styledHelpers/Colors';
 import {fontSize} from '../../styledHelpers/FontSizes';
+import FilterEntity from './FilterEntity';
 
 
 
@@ -23,7 +24,7 @@ const BarWrapper = styled.div`
   /* background-color: ${Colors.white}; */
   background-color: white;
   width: 100%;
-  height: 100px;
+  /* height: 100px; */
   padding: 5px;
   margin-bottom: 10px;
 `;
@@ -240,13 +241,154 @@ const ItemDescription = styled.span`
   color: ${Colors.greyLight};
 `;
 
+const WrapperFilter = styled.div`
+  background-color: red;
+  height: 250px;
+`;
+
+const FilterTitle = styled.span`
+  background-color: yellow;
+  color: ${Colors.greyLight};
+`;
+
+const FilterRow = styled.div`
+  background-color: orange;
+  display: flex;
+`;
+
+const FilterItemWrapper = styled.button`
+  background-color: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 0px; */
+`;
+
+const FilterItemIcon = styled.img`
+  width: 20px;
+  transform: rotate(45deg);
+`;
+
+const FilterItemArrow = styled.img`
+  width: 10px;
+  /* transform: rotate(45deg); */
+`;
+
+const FilterItemText = styled.span`
+  /* background-color: red; */
+  padding: 5px;
+
+`;
+
+const FilterInputRow = styled.input`
+  background-color: ${Colors.grey};
+  width: 80px;
+/* border: 0px; */
+`;
+
+
+
+
+
 const Entities: FC = () => {
 
   const { photoList } = useSelector<IState, IPhotoReducer>(state => ({
     ...state.photos
   }));
 
-  // var items = 
+  const [inputText, setInputText] = useState<string>('');
+
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setInputText(text);
+  }
+
+  const [sortDesc, setSortDesc] = useState<boolean>(true);
+
+  const sortHandler = () => {
+    setSortDesc(!sortDesc);
+  };
+
+
+
+
+  const photos = photoList?.slice(0, 30);
+
+
+  const itemsAsc = photos.sort((a, b) => {
+    var titleA = a.title.toUpperCase();
+    var titleB = b.title.toUpperCase();
+    return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+  }).map( photo => (
+    photo.title.toLowerCase().includes(inputText.toLowerCase()) &&
+    <ItemWrapper key={photo.id}>
+      <ItemImg src={photo.url}/>
+      <ItemDetails>
+          <ItemTitle>
+            {photo?.title}
+          </ItemTitle>
+          <ItemDescription>
+            Caracas 1050, Distrito Capital, Venezuela
+          </ItemDescription>
+      </ItemDetails>
+    </ItemWrapper>
+  ))
+
+  const itemsDesc = photos.sort((a, b) => {
+    var titleA = a.title.toUpperCase();
+    var titleB = b.title.toUpperCase();
+    return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
+  }).map( photo => (
+    photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
+    <ItemWrapper key={photo?.id}>
+      <ItemImg src={photo?.url}/>
+      <ItemDetails>
+          <ItemTitle>
+            {photo?.title}
+          </ItemTitle>
+          <ItemDescription>
+            Caracas 1050, Distrito Capital, Venezuela
+          </ItemDescription>
+      </ItemDetails>
+    </ItemWrapper>
+  ))
+
+  // const items = photoList?.slice(0, 30).map( photo => (
+  //   photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
+  //   <ItemWrapper key={photo?.id}>
+  //     <ItemImg src={photo?.url}/>
+  //     <ItemDetails>
+  //         <ItemTitle>
+  //           {photo?.title}
+  //         </ItemTitle>
+  //         <ItemDescription>
+  //           Caracas 1050, Distrito Capital, Venezuela
+  //         </ItemDescription>
+  //     </ItemDetails>
+  //   </ItemWrapper>
+  // ))
+  
+  // var items = photoList?.slice(0, 30).map( photo => (
+  //   <ItemWrapper key={photo?.id}>
+  //     <ItemImg src={photo?.url}/>
+  //     <ItemDetails>
+  //         <ItemTitle>
+  //           {photo?.title}
+  //         </ItemTitle>
+  //         <ItemDescription>
+  //           Caracas 1050, Distrito Capital, Venezuela
+  //         </ItemDescription>
+  //     </ItemDetails>
+  //     {console.log(photo)}
+  //   </ItemWrapper>
+  // ))
+
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+
+  const handleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
 
   return (
     <Wrapper>
@@ -269,6 +411,7 @@ const Entities: FC = () => {
               </DisplayOptionWrapper>
               
             </FirstBarRightItems>
+            
           </FirstBarWrapper>
 
           <SecondBarWrapper>
@@ -283,12 +426,12 @@ const Entities: FC = () => {
                 ...
               </SecondBarItem>
 
-              <SecondBarItem>
+              <SecondBarItem onClick={sortHandler}>
                 <ItemIcon src="./media/plus.png"/>
                 Sort
               </SecondBarItem>
 
-              <SecondBarItem>
+              <SecondBarItem  onClick={handleFilter}>
                 <ItemIcon src="./media/plus.png"/>
                 Filter
               </SecondBarItem>
@@ -304,8 +447,8 @@ const Entities: FC = () => {
             </FirstBarLeftItems>
 
             <FirstBarRightItems>
-              <InputWrapper>
-                <FilterInput placeholder="Search..." type="text"/>
+              <InputWrapper >
+                <FilterInput placeholder="Search..." type="text" value={inputText} onChange={inputHandler}/>
                 <CustomImg src="./media/search.png" />
               </InputWrapper>
 
@@ -316,41 +459,15 @@ const Entities: FC = () => {
               </FollowedWrapper>
             </FirstBarRightItems>
           </SecondBarWrapper>
+
+
+          {showFilter === true && <FilterEntity/>   }
+                 
+
         </BarWrapper>
 
         <ItemsWrapper>
-          {console.log(photoList)}
-          {photoList?.slice(0, 30).map( photo => (
-            <ItemWrapper key={photo?.id}>
-              <ItemImg src={photo?.url}/>
-              <ItemDetails>
-                  <ItemTitle>
-                    {photo?.title}
-                  </ItemTitle>
-                  <ItemDescription>
-                    Caracas 1050, Distrito Capital, Venezuela
-                  </ItemDescription>
-              </ItemDetails>
-              {console.log(photo)}
-            </ItemWrapper>
-          ))}
-
-
-          {/* <ItemWrapper>
-            <ItemImg src="https://via.placeholder.com/600/d32776"/>
-            <ItemDetails>
-                <ItemTitle>
-                  Przykladowy tytul
-                </ItemTitle>
-                <ItemDescription>
-                  Caracas 1050, Distrito Capital, Venezuela
-                </ItemDescription>
-            </ItemDetails>
-          </ItemWrapper>
-           */}
-          
-          
-          
+          {sortDesc ? itemsAsc : itemsDesc}
         </ItemsWrapper>
 
 

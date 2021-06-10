@@ -1,11 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import {Colors} from '../../styledHelpers/Colors';
 import {fontSize} from '../../styledHelpers/FontSizes';
 import Workspace from './Workspace';
 import ResumeWork from './ResumeWork';
+import ReactPaginate from 'react-paginate';
 
 import { Link } from "react-router-dom"
+import { useSelector } from 'react-redux';
+import { IState } from '../../reducers';
+import { IPhotoReducer } from '../../reducers/photoReducers';
+import { IUserReducer } from '../../reducers/userReducers';
+import { IPostReducer } from '../../reducers/postReducers';
+import { ICommentReducer } from '../../reducers/commentReducers';
 
 
 const Wrapper = styled.section`
@@ -111,8 +118,28 @@ const CustomLink = styled(Link)`
 const ResumeworkWrapper = styled.div`
 `
 
-
 const Home: FC = () => {
+
+  const { photoList } = useSelector<IState, IPhotoReducer>(state => ({
+    ...state.photos
+  }));
+  
+  const { usersList } = useSelector<IState, IUserReducer>(state => ({
+    ...state.users
+  }));
+  
+  const { commentList } = useSelector<IState, ICommentReducer>(state => ({
+    ...state.comments
+  }));
+
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  
+  const handlePageClick = (data: any) => {
+      const selected = data.selected;
+      setCurrentPage(selected);
+  }
+
+
   return (
     <Wrapper>
         <PublicationsWrapper>
@@ -186,9 +213,27 @@ const Home: FC = () => {
         </WorkspacesWrapper>
 
         <ResumeworkWrapper>
-          <ResumeWork/>
+        {commentList?.slice(currentPage, currentPage + 10).map( item => (
+            <ResumeWork/>
+          )
+        )}
         </ResumeworkWrapper>
 
+        {console.log(commentList)}
+        
+
+        <ReactPaginate
+          previousLabel={'previous'}
+          nextLabel={'next'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={commentList.length}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination'}
+          activeClassName={'active'}
+        />
     </Wrapper>
   );
 }
