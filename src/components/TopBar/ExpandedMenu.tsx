@@ -149,7 +149,7 @@ const ExpandedMenu: FC = () => {
             {
               'Entities'.toLowerCase().includes(inputText.toLowerCase()) &&
               <li>
-                <CustomLink to="/NotFound">
+                <CustomLink to="/entities">
                   <Icon src="./media/entities.png" />
                   Entities
                 </CustomLink>

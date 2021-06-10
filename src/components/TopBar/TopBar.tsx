@@ -5,6 +5,7 @@ import useDropdown from 'react-dropdown-hook';
 import ExpandedMenu from './ExpandedMenu';
 import {Wrapper} from '../../styledHelpers/Components';
 import {Colors} from '../../styledHelpers/Colors';
+import { Link } from 'react-router-dom';
 
 const Wrapper2 = styled(Wrapper)`
   padding: 4px;
@@ -98,7 +99,16 @@ const LeftMenu = styled.div`
 	display: flex;
 	align-items: center;
 `
+const CustomLink = styled(Link)`
+ color: black;
+ text-decoration: none;
+ /* display: block; */
+ width: 100%;
+ height: 100%;
+ display: flex;
+ align-items: center;
 
+`
 
 
 const TopBar: FC = () => {
@@ -112,7 +122,10 @@ const TopBar: FC = () => {
     <Wrapper2>
      	<InnerWrapper>
 			<LeftMenu>
-				<LogoImg  src="./media/logo.png"/>
+				<Link to="/">
+					<LogoImg  src="./media/logo.png"/>
+				
+				</Link>
  
 				<MenuWrapper ref={wrapperRef}  >
 					<MenuSelectedOptionWrapper onClick={menuHandler}>

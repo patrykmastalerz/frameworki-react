@@ -241,55 +241,6 @@ const ItemDescription = styled.span`
   color: ${Colors.greyLight};
 `;
 
-const WrapperFilter = styled.div`
-  background-color: red;
-  height: 250px;
-`;
-
-const FilterTitle = styled.span`
-  background-color: yellow;
-  color: ${Colors.greyLight};
-`;
-
-const FilterRow = styled.div`
-  background-color: orange;
-  display: flex;
-`;
-
-const FilterItemWrapper = styled.button`
-  background-color: orange;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* border: 0px; */
-`;
-
-const FilterItemIcon = styled.img`
-  width: 20px;
-  transform: rotate(45deg);
-`;
-
-const FilterItemArrow = styled.img`
-  width: 10px;
-  /* transform: rotate(45deg); */
-`;
-
-const FilterItemText = styled.span`
-  /* background-color: red; */
-  padding: 5px;
-
-`;
-
-const FilterInputRow = styled.input`
-  background-color: ${Colors.grey};
-  width: 80px;
-/* border: 0px; */
-`;
-
-
-
-
-
 const Entities: FC = () => {
 
   const { photoList } = useSelector<IState, IPhotoReducer>(state => ({
@@ -315,14 +266,14 @@ const Entities: FC = () => {
   const photos = photoList?.slice(0, 30);
 
 
-  const itemsAsc = photos.sort((a, b) => {
-    var titleA = a.title.toUpperCase();
-    var titleB = b.title.toUpperCase();
+  const itemsAsc = photos?.sort((a, b) => {
+    var titleA = a?.title.toUpperCase();
+    var titleB = b?.title.toUpperCase();
     return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
   }).map( photo => (
-    photo.title.toLowerCase().includes(inputText.toLowerCase()) &&
-    <ItemWrapper key={photo.id}>
-      <ItemImg src={photo.url}/>
+    photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
+    <ItemWrapper key={photo?.id}>
+      <ItemImg src={photo?.url}/>
       <ItemDetails>
           <ItemTitle>
             {photo?.title}
@@ -334,9 +285,9 @@ const Entities: FC = () => {
     </ItemWrapper>
   ))
 
-  const itemsDesc = photos.sort((a, b) => {
-    var titleA = a.title.toUpperCase();
-    var titleB = b.title.toUpperCase();
+  const itemsDesc = photos?.sort((a, b) => {
+    var titleA = a?.title.toUpperCase();
+    var titleB = b?.title.toUpperCase();
     return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
   }).map( photo => (
     photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&

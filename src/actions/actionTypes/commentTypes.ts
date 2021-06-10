@@ -6,5 +6,4 @@ export interface ICommentTypes {
     GET_COMMENTS: {
         commentList: ISingleComment[];
     }
-    
 }

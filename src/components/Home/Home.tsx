@@ -18,7 +18,7 @@ import { ICommentReducer } from '../../reducers/commentReducers';
 const Wrapper = styled.section`
   /* background-color: ${Colors.white}; */
   /* background-color: red; */
-  width: 100%;
+  max-width: 1000px;
   height: 100%;
   padding: 30px;
   
@@ -142,6 +142,7 @@ const Home: FC = () => {
 
   return (
     <Wrapper>
+      {console.log(commentList)}
         <PublicationsWrapper>
           <PublicationsImg/>
           <LatestPublicationsWrapper>
@@ -212,17 +213,17 @@ const Home: FC = () => {
           <Workspace/>
         </WorkspacesWrapper>
 
-        <ResumeworkWrapper>
+        {/* <ResumeworkWrapper>
         {commentList?.slice(currentPage, currentPage + 10).map( item => (
             <ResumeWork/>
           )
         )}
-        </ResumeworkWrapper>
+        </ResumeworkWrapper> */}
 
-        {console.log(commentList)}
+        {/* {console.log(commentList)} */}
         
 
-        <ReactPaginate
+        {/* <ReactPaginate
           previousLabel={'previous'}
           nextLabel={'next'}
           breakLabel={'...'}
@@ -233,7 +234,7 @@ const Home: FC = () => {
           onPageChange={handlePageClick}
           containerClassName={'pagination'}
           activeClassName={'active'}
-        />
+        /> */}
     </Wrapper>
   );
 }
