@@ -13,6 +13,7 @@ import { IPhotoReducer } from '../../reducers/photoReducers';
 import { IUserReducer } from '../../reducers/userReducers';
 import { IPostReducer } from '../../reducers/postReducers';
 import { ICommentReducer } from '../../reducers/commentReducers';
+import { ISingleComment } from '../../entities/ISingleComment';
 
 
 const Wrapper = styled.section`
@@ -115,8 +116,15 @@ const CustomLink = styled(Link)`
 
 `
 
+
+
 const ResumeworkWrapper = styled.div`
 `
+
+interface IComments {
+  commentsParam: ISingleComment[];
+}
+
 
 const Home: FC = () => {
 
@@ -132,12 +140,14 @@ const Home: FC = () => {
     ...state.comments
   }));
 
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  // const [currentPage, setCurrentPage] = useState<number>(0);
+
+  // const comments = commentList?.slice(currentPage, currentPage + 10);
   
-  const handlePageClick = (data: any) => {
-      const selected = data.selected;
-      setCurrentPage(selected);
-  }
+  // const handlePageClick = (data: any) => {
+  //     const selected = data.selected;
+  //     setCurrentPage(selected);
+  // }
 
 
   return (
@@ -213,28 +223,13 @@ const Home: FC = () => {
           <Workspace/>
         </WorkspacesWrapper>
 
-        {/* <ResumeworkWrapper>
-        {commentList?.slice(currentPage, currentPage + 10).map( item => (
-            <ResumeWork/>
-          )
-        )}
-        </ResumeworkWrapper> */}
+        <ResumeworkWrapper>
+            <ResumeWork />
+        </ResumeworkWrapper>
 
         {/* {console.log(commentList)} */}
         
-
-        {/* <ReactPaginate
-          previousLabel={'previous'}
-          nextLabel={'next'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          pageCount={commentList.length}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={'pagination'}
-          activeClassName={'active'}
-        /> */}
+        
     </Wrapper>
   );
 }

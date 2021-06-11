@@ -260,9 +260,6 @@ const Entities: FC = () => {
     setSortDesc(!sortDesc);
   };
 
-
-
-
   const photos = photoList?.slice(0, 30);
 
 

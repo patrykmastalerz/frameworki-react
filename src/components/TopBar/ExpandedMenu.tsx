@@ -172,7 +172,14 @@ const ExpandedMenu: FC = () => {
             {
               'Client contract'.toLowerCase().includes(inputText.toLowerCase()) &&
               <li>
-                <CustomLink to="/NotFound">
+                <CustomLink to={
+                        {   pathname: '/workspace',
+                            state: {
+                                title: "Client contract",
+                                img: "./media/entities.svg"
+                            } 
+                        }
+                    }>
                   <Icon src="./media/entities.png" />
                   Client contract
                 </CustomLink>
@@ -182,8 +189,15 @@ const ExpandedMenu: FC = () => {
             {
               'Supplier contract'.toLowerCase().includes(inputText.toLowerCase()) &&      
             <li>
-              <CustomLink to="/NotFound">
-                <Icon src="./media/entities.png" />
+              <CustomLink to={
+                        {   pathname: '/workspace',
+                            state: {
+                                title: "Supplier contract",
+                                img: "./media/network.svg"
+                            } 
+                        }
+                    }>
+                <Icon src="./media/network.svg" />
                 Supplier contract
               </CustomLink>
             </li>
@@ -192,8 +206,15 @@ const ExpandedMenu: FC = () => {
             {
               'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
               <li>
-                <CustomLink to="/NotFound">
-                  <Icon src="./media/entities2.png" />
+                <CustomLink to={
+                        {   pathname: '/workspace',
+                            state: {
+                                title: "Corporate",
+                                img: "./media/comments.svg"
+                            } 
+                        }
+                    }>
+                  <Icon src="./media/comments.png" />
                   Corporate
                 </CustomLink>
               </li>
@@ -202,8 +223,15 @@ const ExpandedMenu: FC = () => {
             {
               'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
               <li>
-                <CustomLink to="/NotFound">
-                  <Icon src="./media/entities2.png" />
+                <CustomLink to={
+                        {   pathname: '/workspace',
+                            state: {
+                                title: "Group norms",
+                                img: "./media/privacy.svg"
+                            } 
+                        }
+                    }>
+                  <Icon src="./media/privacy.png" />
                   Group norms
                 </CustomLink>
               </li>
@@ -212,7 +240,14 @@ const ExpandedMenu: FC = () => {
             {
               'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
               <li>
-                <CustomLink to="/NotFound">
+                <CustomLink to={
+                        {   pathname: '/workspace',
+                            state: {
+                                title: "Real estate contracts",
+                                img: "./media/entities2.svg"
+                            } 
+                        }
+                    }>
                   <Icon src="./media/entities2.png" />
                   Real estate contracts
                 </CustomLink>

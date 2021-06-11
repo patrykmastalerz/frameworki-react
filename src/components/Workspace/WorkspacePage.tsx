@@ -1,11 +1,15 @@
-import { FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
+import ReactPaginate from "react-paginate";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { IState } from "../../reducers";
+import { ICommentReducer } from "../../reducers/commentReducers";
+import { IUserReducer } from "../../reducers/userReducers";
 import { Colors } from "../../styledHelpers/Colors";
 import { fontSize } from "../../styledHelpers/FontSizes";
 import ResumeWork from '../Home/ResumeWork';
 
-
-const WorkspacePage: FC = (props) => {
 
 const Wrapper = styled.div`
 box-sizing: border-box;
@@ -289,7 +293,89 @@ const UpdateDate = styled.span`
     color: ${Colors.grey}; 
 `
 
+const StyledPaginateContainer = styled.div`
+  .pagination {
+    display: flex;
+  justify-content: center;
+}
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul.pagination li {
+  display: inline-block;
+  width: 30px;
+  /* border: 1px solid #e2e2e2; */
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+  margin: 4px;
+
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: blue;
+  font-size: 20px;
+
+}
+
+ul.pagination li.active a {
+  color: white;
+}
+ul.pagination li.active {
+  background-color: ${Colors.greyLight};
+}
+
+ul.pagination li a:hover,
+ul.pagination li a.active {
+  color: blue;
+}
+
+.page-selection {
+  width: 48px;
+  height: 30px;
+  color: blue;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+`;
+
+const WorkspacePage: FC = (props) => {
+
+    const location = useLocation<{ title: string, img: string }>();
+
+    const { commentList } = useSelector<IState, ICommentReducer>(state => ({
+        ...state.comments
+    }));
+
+    const { usersList } = useSelector<IState, IUserReducer>(state => ({
+        ...state.users
+    }));
+    
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    
+    const comments = commentList?.slice(currentPage, currentPage + 10);
+      
+    const handlePageClick = (data: any) => {
+        const selected = data.selected;
+        setCurrentPage(selected);
+    }
+
+    const [inputText, setInputText] = useState<string>('');
+
+    const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const text = e.target.value;
+        setInputText(text);
+        console.log(text);
+    }
+      
 
 
 
@@ -297,13 +383,14 @@ const UpdateDate = styled.span`
   
     return (
       <>
+      {console.log(location.state)}
         <Wrapper>
             <HeaderWrapper>
                 <HeaderIMG/>
                 <HeaderDetailsWrapper>
-                    <HeaderDetailsIcon src="./media/entities.svg"/>
+                    <HeaderDetailsIcon src={location.state.img}/>
                     <HeaderDetailsDescriptionWrapper>
-                        <HeaderDetailsTitle>Title</HeaderDetailsTitle>
+                        <HeaderDetailsTitle>{location.state.title}</HeaderDetailsTitle>
                         <span>
                             Workspace purpose and a bit of context. This much needed description is here to remaind people where they are, if they are new or have poor memory. Some more text about nothing.
                         </span>
@@ -356,7 +443,7 @@ const UpdateDate = styled.span`
                         <Header>Latest updates</Header>
                         <RightBar>
                             <InputWrapper>
-                                <FilterInput placeholder="Search Legalcluster" type="text"/>
+                                <FilterInput placeholder="Search Legalcluster" type="text" value={inputText} onChange={inputHandler}/>
                                 <CustomImg src="./media/search.png" />
                             </InputWrapper>
                             <FollowedWrapper>
@@ -409,7 +496,42 @@ const UpdateDate = styled.span`
                    
                 </TopBar>
 
+
+                {comments.map(item => { 
+            const user = usersList?.find(u => u.id === item.postId);
+            
+            return ( user?.id === item.postId && item.name.toLowerCase().includes(inputText.toLowerCase()) ?
                 <ResumeWrapper>
+                    <ResumeTitle>
+                        {item.name}
+                    </ResumeTitle>
+                    <ResumeDescription>
+                        {item.body}
+                    </ResumeDescription>
+                    <ResumeDetails>
+                        <SubWrapper>
+                            <DetailsIcon src="./media/entities.png"/>
+                            <SubText>Subsid. corp.</SubText>
+                        </SubWrapper>
+
+                        <SubWrapper>
+                            <DetailsIcon src="./media/entities.png"/>
+                            <SubText>Client contract</SubText>
+                        </SubWrapper>
+
+                        <UpdateDate>
+                            Updates 3 days ago by {user.name} {user.username}
+                        </UpdateDate>
+                    </ResumeDetails>
+                </ResumeWrapper>
+                        : <></>
+                        
+            )
+
+        })}
+
+
+                {/* <ResumeWrapper>
                     <ResumeTitle>
                         Example title
                     </ResumeTitle>
@@ -431,10 +553,25 @@ const UpdateDate = styled.span`
                             Updates 3 days ago by John Doe
                         </UpdateDate>
                     </ResumeDetails>
-                </ResumeWrapper>
+                </ResumeWrapper> */}
 
 
             </UpdatesWrapper>
+
+            <StyledPaginateContainer>
+                <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={commentList.length}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={10}
+                    onPageChange={handlePageClick}
+                    containerClassName={'pagination'}
+                    activeClassName={'active'}
+                />
+        </StyledPaginateContainer>
         </Wrapper>
       </>
     );

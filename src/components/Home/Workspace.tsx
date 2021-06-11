@@ -53,14 +53,16 @@ const WorkspaceHeaderWrapper = styled.div`
     position: relative;
 `
 
-const WorkspaceHeaderImg = styled.div`
+const WorkspaceHeaderImg = styled.img`
     height: 80px;
     width: 80px;
-    background-color: green;
+    background-color: white;
     position: relative;
     bottom: 30px;
     margin-right: 10px;
     left: 10px;
+    padding: 5px;
+    box-shadow: 0px 5px 8px -1px rgba(0,0,0,0.08);
 `
 
 const WorkspaceDetailsWrapper = styled.div`
@@ -74,6 +76,7 @@ const WorkspaceDetailsWrapper = styled.div`
 
 const WorkspaceIcon = styled.img`
     /* height: 80px; */
+    padding: 5px;
     background-color: white;
     margin: 0 5px;
 `
@@ -100,19 +103,28 @@ const Workspace: FC = () => {
         {
             title: "Client contract",
             users: "150",
+            img: "./media/entities.svg"
             
         },
         {
             title: "Supplier contract",
             users: "50",
+            img: "./media/network.svg"
         },
         {
             title: "Corporate",
             users: "20",
+            img: "./media/comments.svg"
         },
         {
-            title: "Group numbers",
+            title: "Group norms",
             users: "410",
+            img: "./media/privacy.svg"
+        },
+        {
+            title: "Real estate contracts",
+            users: "10",
+            img: "./media/entities2.svg"
         }
       ];
 
@@ -127,14 +139,15 @@ const Workspace: FC = () => {
                 <CustomLink to={
                         {   pathname: '/workspace',
                             state: {
-                                title: workspace.title
+                                title: workspace.title,
+                                img: workspace.img
                             } 
                         }
                     }>
                     <WorkspaceWrapper key={index}>
                         <WorkspaceImg/>
                         <WorkspaceHeaderWrapper>
-                            <WorkspaceHeaderImg/>
+                            <WorkspaceHeaderImg src={workspace.img}/>
                             <span>{workspace.title}</span>
                         </WorkspaceHeaderWrapper>
                         <WorkspaceDetailsWrapper>
