@@ -184,6 +184,14 @@ ul.pagination li a.active {
 }
 `;
 
+interface IUserComment {
+    userId: number,
+    userName: string, 
+    postId: number,
+    title: string,
+    body: string,
+  }
+
 const ResumeWork: FC = () => {
     const { commentList } = useSelector<IState, ICommentReducer>(state => ({
         ...state.comments
@@ -195,25 +203,87 @@ const ResumeWork: FC = () => {
     
     const [currentPage, setCurrentPage] = useState<number>(0);
     
-    const comments = commentList?.slice(currentPage, currentPage + 10);
+    // const comments = commentList?.slice(currentPage, currentPage + 10);
       
     const handlePageClick = (data: any) => {
         const selected = data.selected;
         setCurrentPage(selected);
     }
 
+
+
     const [inputText, setInputText] = useState<string>('');
 
     const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const text = e.target.value;
         setInputText(text);
-        console.log(text);
     }
-      
+
+    const [myfilter, setFilter] = useState<boolean>(true);
+    
+    const filterHandler = () => {
+        setFilter(!myfilter);
+        setCurrentPage(0);
+    }
+
+    const test = usersList?.map( p => {
+        const comment = commentList?.find(u => u.postId === p.id);
+        console.log(p?.id);
+        console.log(comment?.postId);
+        return {
+            userId: p?.id,
+            userName: p?.name, 
+            postId: comment?.postId,
+            title: comment?.name,
+            body: comment?.body,
+        } as IUserComment
+    })
+
+    const mergedComments = commentList?.map( p => {
+        const user = usersList?.find(u => u.id === p.postId);
+        return {
+            userId: user?.id,
+            userName: user?.name, 
+            postId: p.postId,
+            title: p.name,
+            body: p.body,
+        } as IUserComment
+    }).filter( x => myfilter ? x.postId === x.userId : x.postId === 1)
+    .slice(currentPage, currentPage + 10)
+
+    const myComments = commentList?.map( p => {
+        const user = usersList?.find(u => u.id === p.postId);
+        return {
+            userId: user?.id,
+            userName: user?.name, 
+            postId: p.postId,
+            title: p.name,
+            body: p.body,
+        } as IUserComment
+    }).filter( x => x.postId === 1 )
+    .slice(currentPage, currentPage + 10)
+    
+    
+
+    const allComments = commentList?.map( p => {
+        const user = usersList?.find(u => u.id === p.postId);
+        return {
+            userId: user?.id,
+            userName: user?.name, 
+            postId: p.postId,
+            title: p.name,
+            body: p.body,
+        } as IUserComment
+    }).filter( x =>  x.postId === x.userId)
+    .slice(currentPage, currentPage + 10)
+   
 
 
   return (
     <Wrapper>
+        {/* {console.log(test)} */}
+        
+        {console.log(currentPage)}
         <TopBar>
             <Header>Resume your work</Header>
             <RightBar>
@@ -221,22 +291,20 @@ const ResumeWork: FC = () => {
                     <FilterInput placeholder="Search Legalcluster" type="text" value={inputText} onChange={inputHandler}/>
                     <CustomImg src="./media/search.png" />
                 </InputWrapper>
-                <FollowedWrapper>
+                <FollowedWrapper onClick={filterHandler}>
                     <FollowIcon src="./media/entities.png" />
-                    <FollowText>Followed</FollowText>
+                    {myfilter ? <FollowText>Followed</FollowText> : <FollowText>My</FollowText>}
                     <MenuArrowIcon src="./media/arrow-down.png" />
                 </FollowedWrapper>
             </RightBar>
         </TopBar>
 
-        {comments.map(item => { 
-            const user = usersList?.find(u => u.id === item.postId);
-            
-            return ( user?.id === item.postId && item.name.toLowerCase().includes(inputText.toLowerCase()) ?
-                <ResumeWrapper key={item.id}>
-                    {console.log(user?.id === item.postId)}
+
+        {mergedComments.map((item, index) => { 
+            return ( item.title.toLowerCase().includes(inputText.toLowerCase()) ?
+                <ResumeWrapper key={index}>
                             <ResumeTitle>
-                                {item.name}
+                                {item.title}
                             </ResumeTitle>
                             <ResumeDescription>
                                 {item.body}
@@ -253,56 +321,270 @@ const ResumeWork: FC = () => {
                                 </SubWrapper>
 
                                 <UpdateDate>
-                                    Updates 3 days ago by {user.name} {user.username}
+                                    Updates 3 days ago by {item.userName}
                                 </UpdateDate>
                             </ResumeDetails>
                         </ResumeWrapper>
                         : <></>
-                        
-            )
+                
+    )
 
-        })}
-        {/* <ResumeWrapper>
-            <ResumeTitle>
-                Example title
-            </ResumeTitle>
-            <ResumeDescription>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo molestiae blanditiis nisi explicabo praesentium quis. Expedita, magni nostrum a, quaerat ad explicabo quidem aliquid pariatur veniam, officiis necessitatibus est sunt.
-            </ResumeDescription>
-            <ResumeDetails>
-                <SubWrapper>
-                    <DetailsIcon src="./media/entities.png"/>
-                    <SubText>Subsid. corp.</SubText>
-                </SubWrapper>
+})}
 
-                <SubWrapper>
-                    <DetailsIcon src="./media/entities.png"/>
-                    <SubText>Client contract</SubText>
-                </SubWrapper>
-
-                <UpdateDate>
-                    Updates 3 days ago by John Doe
-                </UpdateDate>
-            </ResumeDetails>
-        </ResumeWrapper> */}
-
-        <StyledPaginateContainer>
-            <ReactPaginate
+    {/* {console.log(1/10)} */}
+    <StyledPaginateContainer>
+        <ReactPaginate
             previousLabel={'<'}
             nextLabel={'>'}
             breakLabel={'...'}
             breakClassName={'break-me'}
-            pageCount={commentList.length}
+            pageCount={mergedComments.length >= 10 ? mergedComments.length : 0}
             marginPagesDisplayed={2}
             pageRangeDisplayed={10}
             onPageChange={handlePageClick}
             containerClassName={'pagination'}
             activeClassName={'active'}
-            />
-        </StyledPaginateContainer>
+        />
+    </StyledPaginateContainer>
+
+      
+
+
+       
 
     </Wrapper>
   );
 }
 
 export default ResumeWork;
+
+// {mergedComments.map((item, index) => { 
+//     return ( item.title.toLowerCase().includes(inputText.toLowerCase()) ?
+//         <ResumeWrapper key={index}>
+//                     <ResumeTitle>
+//                         {item.title}
+//                     </ResumeTitle>
+//                     <ResumeDescription>
+//                         {item.body}
+//                     </ResumeDescription>
+//                     <ResumeDetails>
+//                         <SubWrapper>
+//                             <DetailsIcon src="./media/entities.png"/>
+//                             <SubText>Subsid. corp.</SubText>
+//                         </SubWrapper>
+
+//                         <SubWrapper>
+//                             <DetailsIcon src="./media/entities.png"/>
+//                             <SubText>Client contract</SubText>
+//                         </SubWrapper>
+
+//                         <UpdateDate>
+//                             Updates 3 days ago by {item.userName}
+//                         </UpdateDate>
+//                     </ResumeDetails>
+//                 </ResumeWrapper>
+//                 : <></>
+                
+//     )
+
+// })}
+
+
+
+// {mergedComments.length >= 10 && 
+//     <StyledPaginateContainer>
+//         <ReactPaginate
+//             previousLabel={'<'}
+//             nextLabel={'>'}
+//             breakLabel={'...'}
+//             breakClassName={'break-me'}
+//             pageCount={mergedComments.length}
+//             marginPagesDisplayed={2}
+//             pageRangeDisplayed={10}
+//             onPageChange={handlePageClick}
+//             containerClassName={'pagination'}
+//             activeClassName={'active'}
+//         />
+//     </StyledPaginateContainer>
+// }
+
+
+
+
+// {myfilter ? allComments : myComments }
+
+
+// <StyledPaginateContainer>
+//     <ReactPaginate
+//         previousLabel={'<'}
+//         nextLabel={'>'}
+//         breakLabel={'...'}
+//         breakClassName={'break-me'}
+//         pageCount={myfilter ? allComments.length : 0}
+//         marginPagesDisplayed={2}
+//         pageRangeDisplayed={5}
+//         onPageChange={handlePageClick}
+//         containerClassName={'pagination'}
+//         activeClassName={'active'}
+//     />
+// </StyledPaginateContainer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// {mergedComments.map((item, index) => { 
+//     return ( item.title.toLowerCase().includes(inputText.toLowerCase()) ?
+//         <ResumeWrapper key={index}>
+//                     <ResumeTitle>
+//                         {item.title}
+//                     </ResumeTitle>
+//                     <ResumeDescription>
+//                         {item.body}
+//                     </ResumeDescription>
+//                     <ResumeDetails>
+//                         <SubWrapper>
+//                             <DetailsIcon src="./media/entities.png"/>
+//                             <SubText>Subsid. corp.</SubText>
+//                         </SubWrapper>
+
+//                         <SubWrapper>
+//                             <DetailsIcon src="./media/entities.png"/>
+//                             <SubText>Client contract</SubText>
+//                         </SubWrapper>
+
+//                         <UpdateDate>
+//                             Updates 3 days ago by {item.userName}
+//                         </UpdateDate>
+//                     </ResumeDetails>
+//                 </ResumeWrapper>
+//                 : <></>
+                
+//     )
+
+// })}
+
+
+//     {myfilter && <StyledPaginateContainer>
+//         <ReactPaginate
+//             previousLabel={'<'}
+//             nextLabel={'>'}
+//             breakLabel={'...'}
+//             breakClassName={'break-me'}
+//             pageCount={mergedComments.length}
+//             marginPagesDisplayed={2}
+//             pageRangeDisplayed={10}
+//             onPageChange={handlePageClick}
+//             containerClassName={'pagination'}
+//             activeClassName={'active'}
+//         />
+//     </StyledPaginateContainer>}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///
+// {myfilter ? allComments .map((item, index) => { 
+//     return ( item.title.toLowerCase().includes(inputText.toLowerCase()) ?
+//         <ResumeWrapper key={index}>
+//             <ResumeTitle>
+//                 {item.title}
+//             </ResumeTitle>
+//             <ResumeDescription>
+//                 {item.body}
+//             </ResumeDescription>
+//                 <ResumeDetails>
+//                     <SubWrapper>
+//                         <DetailsIcon src="./media/entities.png"/>
+//                         <SubText>Subsid. corp.</SubText>
+//                     </SubWrapper>
+
+//                     <SubWrapper>
+//                         <DetailsIcon src="./media/entities.png"/>
+//                         <SubText>Client contract</SubText>
+//                     </SubWrapper>
+
+//                     <UpdateDate>
+//                             Updates 3 days ago by {item.userName}
+//                     </UpdateDate>
+//                 </ResumeDetails>
+//             </ResumeWrapper>
+//             : <></>
+//         )
+
+//     }) : myComments.map((item, index) => { 
+//         return ( item.title.toLowerCase().includes(inputText.toLowerCase()) ?
+//             <ResumeWrapper key={index}>
+//                 <ResumeTitle>
+//                     {item.title}
+//                 </ResumeTitle>
+//                 <ResumeDescription>
+//                     {item.body}
+//                 </ResumeDescription>
+//                 <ResumeDetails>
+//                     <SubWrapper>
+//                         <DetailsIcon src="./media/entities.png"/>
+//                         <SubText>Subsid. corp.</SubText>
+//                     </SubWrapper>
+
+//                     <SubWrapper>
+//                         <DetailsIcon src="./media/entities.png"/>
+//                         <SubText>Client contract</SubText>
+//                     </SubWrapper>
+
+//                     <UpdateDate>
+//                         Updates 3 days ago by {item.userName}
+//                     </UpdateDate>
+//                 </ResumeDetails>
+//             </ResumeWrapper>
+//             : <></>
+                    
+//         )
+
+//     }) }
+
+
+//     <StyledPaginateContainer>
+//         <ReactPaginate
+//             previousLabel={'<'}
+//             nextLabel={'>'}
+//             breakLabel={'...'}
+//             breakClassName={'break-me'}
+//             // pageCount={myfilter ? allComments.length : myComments.length < 10 ? 0 : myComments.length}
+//             pageCount={myfilter ? allComments.length : myComments.length}
+//             marginPagesDisplayed={2}
+//             pageRangeDisplayed={5}
+//             onPageChange={handlePageClick}
+//             containerClassName={'pagination'}
+//             activeClassName={'active'}
+//         />
+//     </StyledPaginateContainer>
+    

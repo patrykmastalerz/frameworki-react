@@ -5,7 +5,7 @@ import { ISinglePost } from "../entities/ISinglePost";
 
 export const getPosts = ():Promise<ISinglePost[]> =>((dispatch: Dispatch) => {
 
-    return fetch('https://jsonplaceholder.typicode.com/comments')
+    return fetch('https://jsonplaceholder.typicode.com/posts')
         .then(response => response.json())
         .then((postList: ISinglePost[]) => {
             dispatch({

@@ -33,10 +33,10 @@ const PublicationsWrapper = styled.div`
   box-shadow: 0px 5px 8px -1px rgba(0,0,0,0.08);
 `
 
-const PublicationsImg = styled.div`
+const PublicationsImg = styled.img`
   height: 300px;
   min-width: 300px;
-  background-color: black;
+  /* background-color: black; */
 `
 
 const LatestPublicationsWrapper = styled.div`
@@ -61,10 +61,10 @@ const Publication = styled.div`
   display: flex;
 `
 
-const PublicationImg = styled.div`
+const PublicationImg = styled.img`
   height: 60px;
   width: 60px;
-  background-color: black;
+  /* background-color: black; */
 `
 const PublicationDescriptionWrapper = styled.div`
   width: 100%;
@@ -121,24 +121,14 @@ const CustomLink = styled(Link)`
 const ResumeworkWrapper = styled.div`
 `
 
-interface IComments {
-  commentsParam: ISingleComment[];
+interface IPosts {
+  postBody: string, 
+  userName: string,
+  photoUrl: string
 }
 
 
 const Home: FC = () => {
-
-  const { photoList } = useSelector<IState, IPhotoReducer>(state => ({
-    ...state.photos
-  }));
-  
-  const { usersList } = useSelector<IState, IUserReducer>(state => ({
-    ...state.users
-  }));
-  
-  const { commentList } = useSelector<IState, ICommentReducer>(state => ({
-    ...state.comments
-  }));
 
   // const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -149,72 +139,74 @@ const Home: FC = () => {
   //     setCurrentPage(selected);
   // }
 
+  const { photoList } = useSelector<IState, IPhotoReducer>(state => ({
+    ...state.photos
+  }));
+
+  const { postList } = useSelector<IState, IPostReducer>(state => ({
+    ...state.posts
+  }));
+  
+  const { usersList } = useSelector<IState, IUserReducer>(state => ({
+    ...state.users
+  }));
+  
+  // const { commentList } = useSelector<IState, ICommentReducer>(state => ({
+  //   ...state.comments
+  // }));
+
+  const posts = postList?.map( p => {
+    const user = usersList?.find(u => u.id === p.userId);
+    const photo = photoList?.find(u => u.id === p.id);
+
+    // usersList?.find( u => {
+    //   console.log("user id" + u.id);
+    //   console.log(p);
+    // });
+
+    // console.log(user?.id)
+    return {
+      postBody: p.body, 
+      userName: user?.name,
+      photoUrl: photo?.url
+    } as IPosts
+  }).splice(0,4);
+
 
   return (
     <Wrapper>
-      {console.log(commentList)}
+      {console.log(posts)}
         <PublicationsWrapper>
-          <PublicationsImg/>
+          {/* czemu tu zwraca undefined */}
+          <PublicationsImg src={posts[0]?.photoUrl}/>
           <LatestPublicationsWrapper>
             <Header>Latest publications</Header>
-            <Publication>
-              <PublicationImg/>
-                <PublicationDescriptionWrapper>
-                  <PublicationsDescription>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio exercitationem voluptates accusantium. Debitis in nobis assumenda asperiores ipsa veritatis neque eum quis, id fugiat consectetur sit voluptatibus exercitationem excepturi eos.
-                  </PublicationsDescription>
 
-                  <PublicationsDetailsWrapper>
-                    <UpdateDate>
-                    7 jan 2020 
-                    </UpdateDate>
-                    <ProfileAvatarImg/>
-                    <UserName>
-                      John Doe
+            {posts.slice(1,4).map( (item, index) => (
+              <Publication key={index}>
+                <PublicationImg src={item.photoUrl}/>
+                  <PublicationDescriptionWrapper>
+                    <PublicationsDescription>
+                      {item.postBody}
+                      {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio exercitationem voluptates accusantium. Debitis in nobis assumenda asperiores ipsa veritatis neque eum quis, id fugiat consectetur sit voluptatibus exercitationem excepturi eos. */}
+                    </PublicationsDescription>
 
-                    </UserName>
-                  </PublicationsDetailsWrapper>
-                </PublicationDescriptionWrapper>
-            </Publication>
+                    <PublicationsDetailsWrapper>
+                      <UpdateDate>
+                      7 jan 2020 
+                      </UpdateDate>
+                      <ProfileAvatarImg/>
+                      <UserName>
+                        {item.userName}
+                        {/* John Doe */}
 
-            <Publication>
-              <PublicationImg/>
-                <PublicationDescriptionWrapper>
-                  <PublicationsDescription>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio exercitationem voluptates accusantium. Debitis in nobis assumenda asperiores ipsa veritatis neque eum quis, id fugiat consectetur sit voluptatibus exercitationem excepturi eos.
-                  </PublicationsDescription>
+                      </UserName>
+                    </PublicationsDetailsWrapper>
+                  </PublicationDescriptionWrapper>
+              </Publication>
 
-                  <PublicationsDetailsWrapper>
-                    <UpdateDate>
-                    7 jan 2020 
-                    </UpdateDate>
-                    <ProfileAvatarImg/>
-                    <UserName>
-                      John Doe
-
-                    </UserName>
-                  </PublicationsDetailsWrapper>
-                </PublicationDescriptionWrapper>
-            </Publication>
-
-            <Publication>
-              <PublicationImg/>
-                <PublicationDescriptionWrapper>
-                  <PublicationsDescription>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio exercitationem voluptates accusantium. Debitis in nobis assumenda asperiores ipsa veritatis neque eum quis, id fugiat consectetur sit voluptatibus exercitationem excepturi eos.
-                  </PublicationsDescription>
-
-                  <PublicationsDetailsWrapper>
-                    <UpdateDate>
-                    7 jan 2020 
-                    </UpdateDate>
-                    <ProfileAvatarImg/>
-                    <UserName>
-                      John Doe
-                    </UserName>
-                  </PublicationsDetailsWrapper>
-                </PublicationDescriptionWrapper>
-            </Publication>
+            ))}
+ 
             <CustomLink to="/NotFound">See more publications</CustomLink>
           </LatestPublicationsWrapper>
         </PublicationsWrapper>
@@ -224,6 +216,7 @@ const Home: FC = () => {
         </WorkspacesWrapper>
 
         <ResumeworkWrapper>
+          {/* jak przekazac commets? */}
             <ResumeWork />
         </ResumeworkWrapper>
 

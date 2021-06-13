@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { ISinglePhoto } from '../../entities/ISinglePhoto';
 import { IState } from '../../reducers';
 import { IPhotoReducer } from '../../reducers/photoReducers';
 import {Colors} from '../../styledHelpers/Colors';
@@ -10,21 +11,25 @@ import FilterEntity from './FilterEntity';
 
 
 
-const Wrapper = styled.section`
-/* background-color: ${Colors.white}; */
-/* background-color: red; */
-width: 100%;
-height: 100%;
-padding: 20px;
+const Wrapper = styled.section<{isFullScreen: boolean}>`
+
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  ${props => props.isFullScreen && css `
+    position: fixed;
+    margin: 0px;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    background-color: white;
+  `}
 `;
 
 const BarWrapper = styled.div`
   box-sizing: border-box;
-
-  /* background-color: ${Colors.white}; */
   background-color: white;
   width: 100%;
-  /* height: 100px; */
   padding: 5px;
   margin-bottom: 10px;
 `;
@@ -32,7 +37,6 @@ const BarWrapper = styled.div`
 const FirstBarWrapper = styled.div`
   background-color: white;
   width: 100%;
-  /* height: 40px; */
   display: flex;
   justify-content: space-between;
 `;
@@ -50,15 +54,11 @@ const FirstBarRightItems = styled.div`
   background-color: white;
   display: flex;
   align-items: center;
-  /* height: 30px; */
-  /* width: 100px; */
 `;
 
 const DisplayOptionWrapper = styled.div`
   box-sizing: border-box;
   background-color: #87acfc;
-  /* width: 70px; */
-  /* padding: 0px 5px; */
   height: 100%;
   display: flex;
   align-items: center;
@@ -79,18 +79,15 @@ const DisplayOptionText = styled.span`
 `;
 
 const BarIcon = styled.img`
-
     width: 15px;
     height: 15px;
     margin-left: 5px;
 `;
 
 const FirstBarRightScrollIcon = styled.img`
-    /* padding: 10px 10px; */
     width: 15px;
     height: 15px;
     margin: 0 auto;
-    /* margin-left: 5px; */
 `;
 
 const DisplayOptionIconWrapper = styled.div`
@@ -105,7 +102,6 @@ const DisplayOptionIconWrapper = styled.div`
 const SecondBarWrapper = styled.div`
   background-color: white;
   width: 100%;
-  /* height: 40px; */
   display: flex;
   justify-content: space-between;
 `;
@@ -193,42 +189,60 @@ const SecondBarItem = styled.button`
   margin-left: 5px;
 `
 
-const ItemsWrapper = styled.div`
+const ItemsWrapper = styled.div<{isMosaic: boolean; isFullScreen: boolean}>`
+
   background-color: white;
-  width: 100%;
-  /* height: 100px; */
   display: inline-flex;
   flex-wrap: wrap;
-  /* align-items: center; */
-  /* justify-content: space-around; */
+  width: 100%;
+  ${props => props.isMosaic && css `
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  `}
 
+  ${props => props.isFullScreen && css `
+    background-color: white;
+  `}
 `;
 
-const ItemWrapper = styled.div`
+const ItemWrapper = styled.div<{isMosaic: boolean}>`
+  box-sizing: border-box;
   width: 280px;
   height: 100px;
-  margin: 10px;
+  margin: 10px auto;
   display: flex;
-  align-items: flex-start;
   box-shadow: 0px 5px 8px -1px rgba(0,0,0,0.08);
+
+  ${props => props.isMosaic && css `
+  box-sizing: border-box;
+
+  box-sizing: border-box;
+  background-color: pink;
+  width: 100%;
+  margin-bottom: 10px;
+  `}
 `;
 
 const ItemImg = styled.img`
-  /* background-color: black; */
   width: 100px;
   height: 100px;
   margin-bottom: 10px;
 `;
 
-const ItemDetails = styled.div`
+const ItemDetails = styled.div<{isMosaic: boolean}>`
   box-sizing: border-box;
   background-color: white;
   width: 180px;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 5px;
+
+  ${props => props.isMosaic && css `
+    width: 100%;
+  `}
 `;
 
 const ItemTitle = styled.span`
@@ -254,82 +268,51 @@ const Entities: FC = () => {
     setInputText(text);
   }
 
-  const [sortDesc, setSortDesc] = useState<boolean>(true);
+  // const [link, setLink] = useState<string>('');
 
+  const linkHandler = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    // setLink(url);
+  }
+
+  const [mosaic, setMosaic] = useState<boolean>(false);
+  const mosaicHandler = () => {
+    setMosaic(!mosaic);
+  }
+
+
+  const [sortDesc, setSortDesc] = useState<boolean>(false);
   const sortHandler = () => {
     setSortDesc(!sortDesc);
   };
 
-  const photos = photoList?.slice(0, 30);
-
-
-  const itemsAsc = photos?.sort((a, b) => {
-    var titleA = a?.title.toUpperCase();
-    var titleB = b?.title.toUpperCase();
-    return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-  }).map( photo => (
-    photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
-    <ItemWrapper key={photo?.id}>
-      <ItemImg src={photo?.url}/>
-      <ItemDetails>
-          <ItemTitle>
-            {photo?.title}
-          </ItemTitle>
-          <ItemDescription>
-            Caracas 1050, Distrito Capital, Venezuela
-          </ItemDescription>
-      </ItemDetails>
-    </ItemWrapper>
-  ))
-
-  const itemsDesc = photos?.sort((a, b) => {
-    var titleA = a?.title.toUpperCase();
-    var titleB = b?.title.toUpperCase();
-    return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
-  }).map( photo => (
-    photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
-    <ItemWrapper key={photo?.id}>
-      <ItemImg src={photo?.url}/>
-      <ItemDetails>
-          <ItemTitle>
-            {photo?.title}
-          </ItemTitle>
-          <ItemDescription>
-            Caracas 1050, Distrito Capital, Venezuela
-          </ItemDescription>
-      </ItemDetails>
-    </ItemWrapper>
-  ))
-
-  // const items = photoList?.slice(0, 30).map( photo => (
-  //   photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
-  //   <ItemWrapper key={photo?.id}>
-  //     <ItemImg src={photo?.url}/>
-  //     <ItemDetails>
-  //         <ItemTitle>
-  //           {photo?.title}
-  //         </ItemTitle>
-  //         <ItemDescription>
-  //           Caracas 1050, Distrito Capital, Venezuela
-  //         </ItemDescription>
-  //     </ItemDetails>
-  //   </ItemWrapper>
-  // ))
+  const [entity, setEntity] = useState<ISinglePhoto[]>([]);
   
-  // var items = photoList?.slice(0, 30).map( photo => (
-  //   <ItemWrapper key={photo?.id}>
-  //     <ItemImg src={photo?.url}/>
-  //     <ItemDetails>
-  //         <ItemTitle>
-  //           {photo?.title}
-  //         </ItemTitle>
-  //         <ItemDescription>
-  //           Caracas 1050, Distrito Capital, Venezuela
-  //         </ItemDescription>
-  //     </ItemDetails>
-  //     {console.log(photo)}
-  //   </ItemWrapper>
-  // ))
+  //czemu tutaj nie moge posortowac zaleznie od zmiennej - sortDesc
+  useEffect( () => {
+    setEntity(photoList?.slice(0, 30))
+  }, [])
+
+  const [fullScreen, setFullScreen] = useState<boolean>(false);
+  const fullScreenHandler = () => {
+    setFullScreen(!fullScreen);
+  }
+  
+  const cos = entity?.sort((a, b) => {
+    var titleA = a?.title.toUpperCase();
+    var titleB = b?.title.toUpperCase();
+    if(sortDesc){
+      return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
+    }
+    else{
+      return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+    }
+  })
+
+
+
+
 
   const [showFilter, setShowFilter] = useState<boolean>(false);
 
@@ -339,7 +322,7 @@ const Entities: FC = () => {
 
 
   return (
-    <Wrapper>
+    <Wrapper isFullScreen={fullScreen}>
         <BarWrapper>
           <FirstBarWrapper>
             <FirstBarLeftItems>
@@ -348,10 +331,10 @@ const Entities: FC = () => {
             </FirstBarLeftItems>
 
             <FirstBarRightItems>
-              <DisplayOptionWrapper>
+              <DisplayOptionWrapper onClick={mosaicHandler}>
                 <DisplayOptionIcon src="./media/house2.svg"/>
                 <DisplayOptionText>
-                  Mosaic
+                  {mosaic ? "Mosaic" : "Line"}
                 </DisplayOptionText>
                 <DisplayOptionIconWrapper>
                   <FirstBarRightScrollIcon src="./media/plus.svg"/>
@@ -384,11 +367,11 @@ const Entities: FC = () => {
                 Filter
               </SecondBarItem>
 
-              <SecondBarItem>
+              <SecondBarItem onClick={fullScreenHandler}>
                 <ItemIcon src="./media/cog.png"/>
               </SecondBarItem>
 
-              <SecondBarItem>
+              <SecondBarItem onClick={linkHandler}>
                 <ItemIcon src="./media/plus.png"/>
                 Share
               </SecondBarItem>
@@ -414,8 +397,22 @@ const Entities: FC = () => {
 
         </BarWrapper>
 
-        <ItemsWrapper>
-          {sortDesc ? itemsAsc : itemsDesc}
+        <ItemsWrapper isMosaic={mosaic} isFullScreen={fullScreen}>
+          {cos?.map( photo => (
+          photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
+            <ItemWrapper key={photo?.id} isMosaic={mosaic}>
+              <ItemImg src={photo?.url}/>
+              <ItemDetails isMosaic={mosaic}>
+                  <ItemTitle>
+                    {photo?.title}
+                  </ItemTitle>
+                  <ItemDescription>
+                    Caracas 1050, Distrito Capital, Venezuela
+                  </ItemDescription>
+              </ItemDetails>
+            </ItemWrapper>
+          ))}
+          {/* {sortDesc ? itemsAsc : itemsDesc} */}
         </ItemsWrapper>
 
 
@@ -424,3 +421,67 @@ const Entities: FC = () => {
 }
 
 export default Entities;
+
+
+
+
+
+        
+  
+  // useEffect( () => {
+  //   setEntity(photoList?.slice(0, 30).sort((a, b) => {
+  //       var titleA = a?.title.toUpperCase();
+  //       var titleB = b?.title.toUpperCase();
+  //       if(sortDesc){
+  //         // console.log(sortDesc)
+  //         return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+  //       }
+  //       else{
+  //         // console.log(sortDesc)
+
+  //         return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+  //       }
+  //     }))
+  // }, [])
+
+
+
+  
+
+  // const itemsAsc = photos?.sort((a, b) => {
+  //   var titleA = a?.title.toUpperCase();
+  //   var titleB = b?.title.toUpperCase();
+  //   return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+  // }).map( photo => (
+  //   photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
+  //   <ItemWrapper key={photo?.id}>
+  //     <ItemImg src={photo?.url}/>
+  //     <ItemDetails>
+  //         <ItemTitle>
+  //           {photo?.title}
+  //         </ItemTitle>
+  //         <ItemDescription>
+  //           Caracas 1050, Distrito Capital, Venezuela
+  //         </ItemDescription>
+  //     </ItemDetails>
+  //   </ItemWrapper>
+  // ))
+
+  // const itemsDesc = photos?.sort((a, b) => {
+  //   var titleA = a?.title.toUpperCase();
+  //   var titleB = b?.title.toUpperCase();
+  //   return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
+  // }).map( photo => (
+  //   photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
+  //   <ItemWrapper key={photo?.id}>
+  //     <ItemImg src={photo?.url}/>
+  //     <ItemDetails>
+  //         <ItemTitle>
+  //           {photo?.title}
+  //         </ItemTitle>
+  //         <ItemDescription>
+  //           Caracas 1050, Distrito Capital, Venezuela
+  //         </ItemDescription>
+  //     </ItemDetails>
+  //   </ItemWrapper>
+  // ))

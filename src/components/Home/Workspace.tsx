@@ -40,9 +40,10 @@ const WorkspaceWrapper = styled.div`
     margin-right: 10px;
 `
 const WorkspaceImg = styled.div`
-    min-width: 100%;
+    overflow: hidden;
+    width: 320px;
     background-color: black;
-    min-height: 40%;
+    max-height: 40%;
 `
 
 const WorkspaceHeaderWrapper = styled.div`
@@ -145,7 +146,9 @@ const Workspace: FC = () => {
                         }
                     }>
                     <WorkspaceWrapper key={index}>
-                        <WorkspaceImg/>
+                        <WorkspaceImg>
+                            <img src="https://images.pexels.com/photos/8129160/pexels-photo-8129160.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" />
+                        </WorkspaceImg>
                         <WorkspaceHeaderWrapper>
                             <WorkspaceHeaderImg src={workspace.img}/>
                             <span>{workspace.title}</span>

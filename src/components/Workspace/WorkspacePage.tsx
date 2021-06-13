@@ -32,8 +32,10 @@ const HeaderWrapper = styled.div`
 `;
 
 const HeaderIMG = styled.div`
-    min-width: 100%;
-    background-color: black;
+    overflow: hidden;
+    display: block;
+    max-width: 100%;
+    /* background-color: black; */
     min-height: 60%;
 
 `;
@@ -294,58 +296,66 @@ const UpdateDate = styled.span`
 `
 
 const StyledPaginateContainer = styled.div`
-  .pagination {
+    .pagination {
+        display: flex;
+    justify-content: center;
+    }
+
+    ul {
+    list-style: none;
+    padding: 0;
+    }
+
+    ul.pagination li {
+    display: inline-block;
+    width: 30px;
+    /* border: 1px solid #e2e2e2; */
     display: flex;
-  justify-content: center;
-}
+    justify-content: center;
+    font-size: 25px;
+    margin: 4px;
 
-ul {
-  list-style: none;
-  padding: 0;
-}
+    }
 
-ul.pagination li {
-  display: inline-block;
-  width: 30px;
-  /* border: 1px solid #e2e2e2; */
-  display: flex;
-  justify-content: center;
-  font-size: 25px;
-  margin: 4px;
+    ul.pagination li a {
+    text-decoration: none;
+    color: blue;
+    font-size: 20px;
 
-}
+    }
 
-ul.pagination li a {
-  text-decoration: none;
-  color: blue;
-  font-size: 20px;
+    ul.pagination li.active a {
+    color: white;
+    }
+    ul.pagination li.active {
+    background-color: ${Colors.greyLight};
+    }
 
-}
+    ul.pagination li a:hover,
+    ul.pagination li a.active {
+    color: blue;
+    }
 
-ul.pagination li.active a {
-  color: white;
-}
-ul.pagination li.active {
-  background-color: ${Colors.greyLight};
-}
+    .page-selection {
+    width: 48px;
+    height: 30px;
+    color: blue;
+    }
 
-ul.pagination li a:hover,
-ul.pagination li a.active {
-  color: blue;
-}
-
-.page-selection {
-  width: 48px;
-  height: 30px;
-  color: blue;
-}
-
-.pagination-wrapper {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
+    .pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    }
 `;
+
+interface IUserComment {
+    userId: number,
+    userName: string, 
+    postId: number,
+    title: string,
+    body: string,
+  }
 
 const WorkspacePage: FC = (props) => {
 
@@ -375,8 +385,26 @@ const WorkspacePage: FC = (props) => {
         setInputText(text);
         console.log(text);
     }
-      
 
+
+    const [myfilter, setFilter] = useState<boolean>(true);
+    
+    const filterHandler = () => {
+        setFilter(!myfilter);
+        setCurrentPage(0);
+    }
+      
+    const mergedComments = commentList?.map( p => {
+        const user = usersList?.find(u => u.id === p.postId);
+        return {
+            userId: user?.id,
+            userName: user?.name, 
+            postId: p.postId,
+            title: p.name,
+            body: p.body,
+        } as IUserComment
+    }).filter( x => myfilter ? x.postId === x.userId : x.postId === 1)
+    .slice(currentPage, currentPage + 10)
 
 
  
@@ -386,7 +414,9 @@ const WorkspacePage: FC = (props) => {
       {console.log(location.state)}
         <Wrapper>
             <HeaderWrapper>
-                <HeaderIMG/>
+                <HeaderIMG >
+                    <img src="https://images.pexels.com/photos/8129160/pexels-photo-8129160.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="obrazek" />
+                </HeaderIMG>
                 <HeaderDetailsWrapper>
                     <HeaderDetailsIcon src={location.state.img}/>
                     <HeaderDetailsDescriptionWrapper>
@@ -446,9 +476,9 @@ const WorkspacePage: FC = (props) => {
                                 <FilterInput placeholder="Search Legalcluster" type="text" value={inputText} onChange={inputHandler}/>
                                 <CustomImg src="./media/search.png" />
                             </InputWrapper>
-                            <FollowedWrapper>
+                            <FollowedWrapper onClick={filterHandler}>
                                 <FollowIcon src="./media/entities.png" />
-                                <FollowText>Followed</FollowText>
+                                {myfilter ? <FollowText>Followed</FollowText> : <FollowText>My</FollowText>}
                                 <MenuArrowIcon src="./media/arrow-down.png" />
                             </FollowedWrapper>
                         </RightBar>
@@ -496,82 +526,51 @@ const WorkspacePage: FC = (props) => {
                    
                 </TopBar>
 
-
-                {comments.map(item => { 
-            const user = usersList?.find(u => u.id === item.postId);
-            
-            return ( user?.id === item.postId && item.name.toLowerCase().includes(inputText.toLowerCase()) ?
-                <ResumeWrapper>
-                    <ResumeTitle>
-                        {item.name}
-                    </ResumeTitle>
-                    <ResumeDescription>
-                        {item.body}
-                    </ResumeDescription>
-                    <ResumeDetails>
-                        <SubWrapper>
-                            <DetailsIcon src="./media/entities.png"/>
-                            <SubText>Subsid. corp.</SubText>
-                        </SubWrapper>
-
-                        <SubWrapper>
-                            <DetailsIcon src="./media/entities.png"/>
-                            <SubText>Client contract</SubText>
-                        </SubWrapper>
-
-                        <UpdateDate>
-                            Updates 3 days ago by {user.name} {user.username}
-                        </UpdateDate>
-                    </ResumeDetails>
-                </ResumeWrapper>
-                        : <></>
-                        
-            )
-
-        })}
-
-
-                {/* <ResumeWrapper>
-                    <ResumeTitle>
-                        Example title
-                    </ResumeTitle>
-                    <ResumeDescription>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo molestiae blanditiis nisi explicabo praesentium quis. Expedita, magni nostrum a, quaerat ad explicabo quidem aliquid pariatur veniam, officiis necessitatibus est sunt.
-                    </ResumeDescription>
-                    <ResumeDetails>
-                        <SubWrapper>
-                            <DetailsIcon src="./media/entities.png"/>
-                            <SubText>Subsid. corp.</SubText>
-                        </SubWrapper>
-
-                        <SubWrapper>
-                            <DetailsIcon src="./media/entities.png"/>
-                            <SubText>Client contract</SubText>
-                        </SubWrapper>
-
-                        <UpdateDate>
-                            Updates 3 days ago by John Doe
-                        </UpdateDate>
-                    </ResumeDetails>
-                </ResumeWrapper> */}
-
+                {mergedComments.map((item, index) => { 
+                return ( item.title.toLowerCase().includes(inputText.toLowerCase()) ?
+                    <ResumeWrapper key={index}>
+                        <ResumeTitle>
+                            {item.title}
+                        </ResumeTitle>
+                        <ResumeDescription>
+                            {item.body}
+                        </ResumeDescription>
+                        <ResumeDetails>
+                            <SubWrapper>
+                                <DetailsIcon src="./media/entities.png"/>
+                                <SubText>Subsid. corp.</SubText>
+                            </SubWrapper>
+                            <SubWrapper>
+                                <DetailsIcon src="./media/entities.png"/>
+                                <SubText>Client contract</SubText>
+                            </SubWrapper>
+                            <UpdateDate>
+                                Updates 3 days ago by {item.userName}
+                                </UpdateDate>
+                        </ResumeDetails>
+                    </ResumeWrapper>
+                    : <></>
+                    )
+                })}
+                
+                <StyledPaginateContainer>
+                    <ReactPaginate
+                        previousLabel={'<'}
+                        nextLabel={'>'}
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={mergedComments.length >= 10 ? mergedComments.length : 0}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={10}
+                        onPageChange={handlePageClick}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                        />
+                </StyledPaginateContainer>
 
             </UpdatesWrapper>
 
-            <StyledPaginateContainer>
-                <ReactPaginate
-                    previousLabel={'<'}
-                    nextLabel={'>'}
-                    breakLabel={'...'}
-                    breakClassName={'break-me'}
-                    pageCount={commentList.length}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={10}
-                    onPageChange={handlePageClick}
-                    containerClassName={'pagination'}
-                    activeClassName={'active'}
-                />
-        </StyledPaginateContainer>
+            
         </Wrapper>
       </>
     );

@@ -21,6 +21,7 @@ import { getUsers } from '../../actions/usersActions';
 import { getComments } from '../../actions/commentActions';
 import ResumeWork from '../Home/ResumeWork';
 import { getPhotos } from '../../actions/photoActions';
+import { getPosts } from '../../actions/postActions';
 
 
 const Wrapper = styled.section`
@@ -61,6 +62,7 @@ const routes = [
 type GetUsers = ReturnType<typeof getUsers>
 type GetComments = ReturnType<typeof getComments>
 type GetPhotos = ReturnType<typeof getPhotos>
+type GetPosts = ReturnType<typeof getPosts>
 
 const MainPage: FC = () => {
 
@@ -71,6 +73,7 @@ const MainPage: FC = () => {
     dispatch<GetUsers>(getUsers());
     dispatch<GetComments>(getComments());
     dispatch<GetPhotos>(getPhotos());
+    dispatch<GetPosts>(getPosts());
   }, [])
 
 
