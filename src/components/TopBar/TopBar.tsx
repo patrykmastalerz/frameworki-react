@@ -37,19 +37,19 @@ const ImgBackground = styled.div<{ showBg: boolean }>`
     css`
       margin-left: 5px;
       &:after {
-      content: "2";
-      padding: 6px;
-      font-size: ${fontSize[12]};
-      position: absolute;
-      z-index: 3;
-      top: -5px;
-      right: -8px;
-      border-radius: 50%;
-      color: white;
-      background: #3e00e9;
-      width: 10px;
-      text-align:center;
-  }
+        content: "2";
+        padding: 6px;
+        font-size: ${fontSize[12]};
+        position: absolute;
+        z-index: 3;
+        top: -5px;
+        right: -8px;
+        border-radius: 50%;
+        color: white;
+        background: #3e00e9;
+        width: 10px;
+        text-align: center;
+      }
     `}
 `;
 
