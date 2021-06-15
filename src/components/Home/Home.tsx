@@ -1,7 +1,11 @@
-import React, { FC, useMemo } from "react";
-import { useSelector } from "react-redux";
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { getComments } from "../../actions/commentActions";
+import { getPhotos } from "../../actions/photoActions";
+import { getPosts } from "../../actions/postActions";
+import { getUsers } from "../../actions/usersActions";
 import { IState } from "../../reducers";
 import { IPhotoReducer } from "../../reducers/photoReducers";
 import { IPostReducer } from "../../reducers/postReducers";
@@ -107,7 +111,25 @@ interface IPosts {
   avatarUrl: string;
 }
 
+// type GetUsers = ReturnType<typeof getUsers>;
+// type GetComments = ReturnType<typeof getComments>;
+// type GetPhotos = ReturnType<typeof getPhotos>;
+// type GetPosts = ReturnType<typeof getPosts>;
+
+
+
+
 const Home: FC = () => {
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch<GetUsers>(getUsers());
+  //   dispatch<GetComments>(getComments());
+  //   dispatch<GetPhotos>(getPhotos());
+  //   dispatch<GetPosts>(getPosts());
+  // }, []);
+
+
   const { photoList } = useSelector<IState, IPhotoReducer>((state) => ({
     ...state.photos,
   }));
@@ -120,8 +142,10 @@ const Home: FC = () => {
     ...state.users,
   }));
 
-  const posts = useMemo(
-    () =>
+  const [mergedComments, setMergedComments] = useState<IPosts[]>([]);
+
+  useEffect(() => {
+    setMergedComments(
       postList
         ?.map((p) => {
           const user = usersList?.find((u) => u.id === p.userId);
@@ -136,17 +160,17 @@ const Home: FC = () => {
           } as IPosts;
         })
         .splice(0, 4),
-    [postList]
-  );
+    );
+  }, [postList, usersList, photoList]);
 
   return (
     <Wrapper>
       <PublicationsWrapper>
-        <PublicationsImg src={posts[0]?.photoUrl} />
+        <PublicationsImg src={mergedComments[0]?.photoUrl} />
         <LatestPublicationsWrapper>
           <Header>Latest publications</Header>
 
-          {posts.slice(1, 4).map((item, index) => (
+          {mergedComments.slice(1, 4).map((item, index) => (
             <Publication key={index}>
               <PublicationImg src={item.photoUrl} />
               <PublicationDescriptionWrapper>

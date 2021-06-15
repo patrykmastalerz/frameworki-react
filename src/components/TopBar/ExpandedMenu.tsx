@@ -115,7 +115,7 @@ const ExpandedMenu: FC = () => {
           } as UserAvatar;
         })
         .splice(0, 1),
-    [usersList]
+    [usersList, photoList]
   );
 
   return (

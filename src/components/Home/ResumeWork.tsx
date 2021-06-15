@@ -229,7 +229,7 @@ const ResumeWork: FC = () => {
         .filter((x) => (myfilter ? x.postId === x.userId : x.postId === 1))
         .slice(currentPage, currentPage + 10)
     );
-  }, [commentList, myfilter]);
+  }, [commentList, usersList, myfilter]);
 
   return (
     <Wrapper>
