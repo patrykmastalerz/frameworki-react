@@ -1,15 +1,12 @@
-import React, { ChangeEvent, ChangeEventHandler, FC, useState } from 'react';
-import styled from 'styled-components';
-import {Colors} from '../../styledHelpers/Colors';
-import {fontSize} from '../../styledHelpers/FontSizes';
-import { 
-  Link
-} from "react-router-dom"
-import { useSelector } from 'react-redux';
-import { IState } from '../../reducers';
-import { IUserReducer } from '../../reducers/userReducers';
-
-
+import React, { ChangeEvent, FC, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { IState } from "../../reducers";
+import { IPhotoReducer } from "../../reducers/photoReducers";
+import { IUserReducer } from "../../reducers/userReducers";
+import { Colors } from "../../styledHelpers/Colors";
+import { fontSize } from "../../styledHelpers/FontSizes";
 
 const Wrapper = styled.section`
   background-color: ${Colors.white};
@@ -23,17 +20,13 @@ const Wrapper = styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-  };
+  }
 
   li {
     height: 35px;
-    /* display: flex; */
-    /* align-items: center; */
     font-size: ${fontSize[14]};
     font-weight: bold;
-    /* background-color: yellow; */
-  };
-
+  }
 `;
 
 const Icon = styled.img`
@@ -49,9 +42,9 @@ const FilterInput = styled.input`
   border: 1px solid ${Colors.grey};
 
   &::placeholder {
-		color: ${Colors.grey};
-		font-weight: bold;
-	}
+    color: ${Colors.grey};
+    font-weight: bold;
+  }
 `;
 
 const Header = styled.span`
@@ -62,14 +55,12 @@ const Header = styled.span`
   font-weight: bold;
 `;
 
-const UserAvatar = styled.div`
+const UserAvatar = styled.img`
   border-radius: 50px;
   margin: 0px 10px 0px 5px;
   background-color: blue;
   width: 30px;
   height: 30px;
-
-  
 `;
 
 const Logout = styled.button`
@@ -86,203 +77,203 @@ const AccountWrapper = styled.div`
 `;
 
 const CustomLink = styled(Link)`
- color: black;
- text-decoration: none;
- /* display: block; */
- width: 100%;
- height: 100%;
- display: flex;
- align-items: center;
-
-`
-
+  color: black;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
 
 const ExpandedMenu: FC = () => {
-  const { usersList } = useSelector<IState, IUserReducer>(state => ({
-    ...state.users
+  const { usersList } = useSelector<IState, IUserReducer>((state) => ({
+    ...state.users,
   }));
 
+  const { photoList } = useSelector<IState, IPhotoReducer>((state) => ({
+    ...state.photos,
+  }));
 
-  const [inputText, setInputText] = useState<string>('');
+  const [inputText, setInputText] = useState<string>("");
 
   const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     setInputText(text);
-  }
+  };
 
   return (
     <Wrapper>
-        {console.log(usersList)}
-        <FilterInput placeholder="Filter..." value={inputText} onChange={inputHandler}/>
-        <Header>Platform</Header>
+      {console.log(usersList)}
+      <FilterInput
+        placeholder="Filter..."
+        value={inputText}
+        onChange={inputHandler}
+      />
+      <Header>Platform</Header>
+      <ul>
+        {"Home".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink to="/">
+              <Icon src="./media/house.png" />
+              Home
+            </CustomLink>
+          </li>
+        )}
+
+        {"Publications".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink to="/NotFound">
+              <Icon src="./media/publications.png" />
+              Publications
+            </CustomLink>
+          </li>
+        )}
+
+        {"People".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink to="/NotFound">
+              <Icon src="./media/people.png" />
+              People
+            </CustomLink>
+          </li>
+        )}
+
+        {"Entities".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink to="/entities">
+              <Icon src="./media/entities.png" />
+              Entities
+            </CustomLink>
+          </li>
+        )}
+
+        {"Administration".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink to="/NotFound">
+              <Icon src="./media/administration.png" />
+              Administration
+            </CustomLink>
+          </li>
+        )}
+      </ul>
+      <Header>Workspaces</Header>
+      <ul>
+        {"Client contract".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink
+              to={{
+                pathname: "/workspace",
+                state: {
+                  title: "Client contract",
+                  img: "./media/entities.svg",
+                },
+              }}
+            >
+              <Icon src="./media/entities.png" />
+              Client contract
+            </CustomLink>
+          </li>
+        )}
+
+        {"Supplier contract"
+          .toLowerCase()
+          .includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink
+              to={{
+                pathname: "/workspace",
+                state: {
+                  title: "Supplier contract",
+                  img: "./media/network.svg",
+                },
+              }}
+            >
+              <Icon src="./media/network.svg" />
+              Supplier contract
+            </CustomLink>
+          </li>
+        )}
+
+        {"Corporate".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink
+              to={{
+                pathname: "/workspace",
+                state: {
+                  title: "Corporate",
+                  img: "./media/comments.svg",
+                },
+              }}
+            >
+              <Icon src="./media/comments.png" />
+              Corporate
+            </CustomLink>
+          </li>
+        )}
+
+        {"Corporate".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink
+              to={{
+                pathname: "/workspace",
+                state: {
+                  title: "Group norms",
+                  img: "./media/privacy.svg",
+                },
+              }}
+            >
+              <Icon src="./media/privacy.png" />
+              Group norms
+            </CustomLink>
+          </li>
+        )}
+
+        {"Corporate".toLowerCase().includes(inputText.toLowerCase()) && (
+          <li>
+            <CustomLink
+              to={{
+                pathname: "/workspace",
+                state: {
+                  title: "Real estate contracts",
+                  img: "./media/entities2.svg",
+                },
+              }}
+            >
+              <Icon src="./media/entities2.png" />
+              Real estate contracts
+            </CustomLink>
+          </li>
+        )}
+      </ul>
+      <AccountWrapper>
+        <Header>Account</Header>
         <ul>
-            {
-              'Home'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to="/">
-                  <Icon src="./media/house.png" />
-                    Home
-                </CustomLink>
-              </li>
-            }
-
-            {
-              'Publications'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to="/NotFound">
-                  <Icon src="./media/publications.png" />
-                  Publications
-                </CustomLink>
-              </li>
-            }
-
-            {
-              'People'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-              <CustomLink to="/NotFound">
-                  <Icon src="./media/people.png" />
-                  People
-                </CustomLink>
-              </li>
-            }
-
-            {
-              'Entities'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to="/entities">
-                  <Icon src="./media/entities.png" />
-                  Entities
-                </CustomLink>
-              </li>
-            }     
-
-            {
-              'Administration'.toLowerCase().includes(inputText.toLowerCase()) &&
-            <li>
-              <CustomLink to="/NotFound">
-                <Icon src="./media/administration.png" />
-                Administration
-              </CustomLink>
-            </li>
-            }
+          <li>
+            <CustomLink to="/NotFound">
+              <UserAvatar src={photoList[0]?.url} />
+              {/* {usersList[0].name} */}
+            </CustomLink>
+          </li>
+          <li>
+            <CustomLink to="/NotFound">
+              <Icon src="./media/privacy.png" />
+              Privacy
+            </CustomLink>
+          </li>
+          <li>
+            <CustomLink to="/NotFound">
+              <Icon src="./media/settings.png" />
+              Settings
+            </CustomLink>
+          </li>
         </ul>
-        <Header>Workspaces</Header>
-        <ul>
-
-            {
-              'Client contract'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to={
-                        {   pathname: '/workspace',
-                            state: {
-                                title: "Client contract",
-                                img: "./media/entities.svg"
-                            } 
-                        }
-                    }>
-                  <Icon src="./media/entities.png" />
-                  Client contract
-                </CustomLink>
-              </li>
-            }
-
-            {
-              'Supplier contract'.toLowerCase().includes(inputText.toLowerCase()) &&      
-            <li>
-              <CustomLink to={
-                        {   pathname: '/workspace',
-                            state: {
-                                title: "Supplier contract",
-                                img: "./media/network.svg"
-                            } 
-                        }
-                    }>
-                <Icon src="./media/network.svg" />
-                Supplier contract
-              </CustomLink>
-            </li>
-            }
-
-            {
-              'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to={
-                        {   pathname: '/workspace',
-                            state: {
-                                title: "Corporate",
-                                img: "./media/comments.svg"
-                            } 
-                        }
-                    }>
-                  <Icon src="./media/comments.png" />
-                  Corporate
-                </CustomLink>
-              </li>
-            }
-
-            {
-              'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to={
-                        {   pathname: '/workspace',
-                            state: {
-                                title: "Group norms",
-                                img: "./media/privacy.svg"
-                            } 
-                        }
-                    }>
-                  <Icon src="./media/privacy.png" />
-                  Group norms
-                </CustomLink>
-              </li>
-            }
-
-            {
-              'Corporate'.toLowerCase().includes(inputText.toLowerCase()) &&
-              <li>
-                <CustomLink to={
-                        {   pathname: '/workspace',
-                            state: {
-                                title: "Real estate contracts",
-                                img: "./media/entities2.svg"
-                            } 
-                        }
-                    }>
-                  <Icon src="./media/entities2.png" />
-                  Real estate contracts
-                </CustomLink>
-              </li>
-            }
-        </ul>
-        <AccountWrapper>
-          <Header>Account</Header>
-          <ul>
-              <li>
-                <CustomLink to="/NotFound">
-                  <UserAvatar  />
-                  {/* {usersList[0].name} */}
-                </CustomLink>
-              </li>
-              <li>
-                <CustomLink to="/NotFound">
-                  <Icon src="./media/privacy.png" />
-                  Privacy
-                </CustomLink>
-              </li>
-              <li>
-                <CustomLink to="/NotFound">
-                  <Icon src="./media/settings.png" />
-                  Settings
-                </CustomLink>
-              </li>
-          </ul>
-        </AccountWrapper>
-        <Logout>
-          <Icon src="./media/logout.png" /> 
-          Logout 
-        </Logout>
+      </AccountWrapper>
+      <Logout>
+        <Icon src="./media/logout.png" />
+        Logout
+      </Logout>
     </Wrapper>
   );
-}
+};
 
 export default ExpandedMenu;

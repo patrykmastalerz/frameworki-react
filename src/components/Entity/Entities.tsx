@@ -1,29 +1,27 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import styled, { css } from 'styled-components';
-import { ISinglePhoto } from '../../entities/ISinglePhoto';
-import { IState } from '../../reducers';
-import { IPhotoReducer } from '../../reducers/photoReducers';
-import {Colors} from '../../styledHelpers/Colors';
-import {fontSize} from '../../styledHelpers/FontSizes';
-import FilterEntity from './FilterEntity';
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import styled, { css } from "styled-components";
+import { ISinglePhoto } from "../../entities/ISinglePhoto";
+import { IState } from "../../reducers";
+import { IPhotoReducer } from "../../reducers/photoReducers";
+import { Colors } from "../../styledHelpers/Colors";
+import { fontSize } from "../../styledHelpers/FontSizes";
+import FilterEntity from "./FilterEntity";
 
-
-
-
-const Wrapper = styled.section<{isFullScreen: boolean}>`
-
+const Wrapper = styled.section<{ isFullScreen: boolean }>`
   width: 100%;
   min-height: 100%;
   padding: 20px;
-  ${props => props.isFullScreen && css `
-    position: fixed;
-    margin: 0px;
-    top: 0px;
-    left: 0px;
-    padding: 0px;
-    background-color: white;
-  `}
+  ${(props) =>
+    props.isFullScreen &&
+    css`
+      position: fixed;
+      margin: 0px;
+      top: 0px;
+      left: 0px;
+      padding: 0px;
+      background-color: white;
+    `}
 `;
 
 const BarWrapper = styled.div`
@@ -47,7 +45,6 @@ const FirstBarLeftItems = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
 `;
 
 const FirstBarRightItems = styled.div`
@@ -79,15 +76,15 @@ const DisplayOptionText = styled.span`
 `;
 
 const BarIcon = styled.img`
-    width: 15px;
-    height: 15px;
-    margin-left: 5px;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
 `;
 
 const FirstBarRightScrollIcon = styled.img`
-    width: 15px;
-    height: 15px;
-    margin: 0 auto;
+  width: 15px;
+  height: 15px;
+  margin: 0 auto;
 `;
 
 const DisplayOptionIconWrapper = styled.div`
@@ -107,59 +104,58 @@ const SecondBarWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-	width: 140px;
+  width: 140px;
   height: 30px;
-	display: flex;
-	justify-content:space-between;
-	border: 1px solid ${Colors.grey};
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid ${Colors.grey};
   background-color: white;
 `;
 
-
 const FilterInput = styled.input`
-	width: 95%;
-	border: 0px;
-	text-align: center;
+  width: 95%;
+  border: 0px;
+  text-align: center;
 
-	&::placeholder {
-		color: ${Colors.grey};
+  &::placeholder {
+    color: ${Colors.grey};
     font-size: ${fontSize[12]};
-		font-weight: bold;
-	}
+    font-weight: bold;
+  }
 `;
 
 const CustomImg = styled.img`
-	margin: 10px;
+  margin: 10px;
 `;
 
 const FollowedWrapper = styled.button`
-    width: 120px;
-    height: 32px;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 0px;
-    margin: 5px;
-    border: 1px solid blue;
-`
+  width: 120px;
+  height: 32px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0px;
+  margin: 5px;
+  border: 1px solid blue;
+`;
 
 const FollowIcon = styled.img`
-    width: 15px;
-    height: 15px;
-    margin: 0 auto;
-`
+  width: 15px;
+  height: 15px;
+  margin: 0 auto;
+`;
 
 const MenuArrowIcon = styled.img`
-	width: 10px;
-	height: 6px;
+  width: 10px;
+  height: 6px;
   margin-left: 5px;
-`
+`;
 
 const FollowText = styled.span`
-    color: blue;
-    font-weight: bold;
-`
+  color: blue;
+  font-weight: bold;
+`;
 const AllButtonWrapper = styled.button`
   background-color: #87acfc;
   color: blue;
@@ -169,13 +165,12 @@ const AllButtonWrapper = styled.button`
   display: flex;
   align-items: center;
   font-size: ${fontSize[10]};
-
-`
+`;
 
 const ItemIcon = styled.img`
   width: 10px;
   margin-right: 5px;
-`
+`;
 const SecondBarItem = styled.button`
   display: flex;
   background-color: transparent;
@@ -187,41 +182,46 @@ const SecondBarItem = styled.button`
   border-right: 1px solid black;
   padding: 5px 10px;
   margin-left: 5px;
-`
+`;
 
-const ItemsWrapper = styled.div<{isMosaic: boolean; isFullScreen: boolean}>`
-
+const ItemsWrapper = styled.div<{ isMosaic: boolean; isFullScreen: boolean }>`
   background-color: white;
   display: inline-flex;
   flex-wrap: wrap;
   width: 100%;
-  ${props => props.isMosaic && css `
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-  `}
+  ${(props) =>
+    props.isMosaic &&
+    css`
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: column;
+    `}
 
-  ${props => props.isFullScreen && css `
-    background-color: white;
-  `}
+  ${(props) =>
+    props.isFullScreen &&
+    css`
+      background-color: white;
+    `}
 `;
 
-const ItemWrapper = styled.div<{isMosaic: boolean}>`
+const ItemWrapper = styled.div<{ isMosaic: boolean }>`
   box-sizing: border-box;
   width: 280px;
   height: 100px;
   margin: 10px auto;
   display: flex;
-  box-shadow: 0px 5px 8px -1px rgba(0,0,0,0.08);
+  box-shadow: 0px 5px 8px -1px rgba(0, 0, 0, 0.08);
 
-  ${props => props.isMosaic && css `
-  box-sizing: border-box;
+  ${(props) =>
+    props.isMosaic &&
+    css`
+      box-sizing: border-box;
 
-  box-sizing: border-box;
-  background-color: pink;
-  width: 100%;
-  margin-bottom: 10px;
-  `}
+      box-sizing: border-box;
+      background-color: pink;
+      width: 100%;
+      margin-bottom: 10px;
+    `}
 `;
 
 const ItemImg = styled.img`
@@ -230,7 +230,7 @@ const ItemImg = styled.img`
   margin-bottom: 10px;
 `;
 
-const ItemDetails = styled.div<{isMosaic: boolean}>`
+const ItemDetails = styled.div<{ isMosaic: boolean }>`
   box-sizing: border-box;
   background-color: white;
   width: 180px;
@@ -240,9 +240,11 @@ const ItemDetails = styled.div<{isMosaic: boolean}>`
   justify-content: space-between;
   padding: 5px;
 
-  ${props => props.isMosaic && css `
-    width: 100%;
-  `}
+  ${(props) =>
+    props.isMosaic &&
+    css`
+      width: 100%;
+    `}
 `;
 
 const ItemTitle = styled.span`
@@ -256,232 +258,146 @@ const ItemDescription = styled.span`
 `;
 
 const Entities: FC = () => {
-
-  const { photoList } = useSelector<IState, IPhotoReducer>(state => ({
-    ...state.photos
+  const [inputText, setInputText] = useState<string>("");
+  const [mosaic, setMosaic] = useState<boolean>(false);
+  const [sortDesc, setSortDesc] = useState<boolean>(false);
+  const [fullScreen, setFullScreen] = useState<boolean>(false);
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+  const [entity, setEntity] = useState<ISinglePhoto[]>([]);
+  const { photoList } = useSelector<IState, IPhotoReducer>((state) => ({
+    ...state.photos,
   }));
 
-  const [inputText, setInputText] = useState<string>('');
-
-  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setInputText(text);
-  }
-
-  // const [link, setLink] = useState<string>('');
-
-  const linkHandler = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url);
-    // setLink(url);
-  }
-
-  const [mosaic, setMosaic] = useState<boolean>(false);
-  const mosaicHandler = () => {
-    setMosaic(!mosaic);
-  }
-
-
-  const [sortDesc, setSortDesc] = useState<boolean>(false);
-  const sortHandler = () => {
-    setSortDesc(!sortDesc);
-  };
-
-  const [entity, setEntity] = useState<ISinglePhoto[]>([]);
-  
-  //czemu tutaj nie moge posortowac zaleznie od zmiennej - sortDesc
-  useEffect( () => {
-    setEntity(photoList?.slice(0, 30))
-  }, [])
-
-  const [fullScreen, setFullScreen] = useState<boolean>(false);
-  const fullScreenHandler = () => {
-    setFullScreen(!fullScreen);
-  }
-  
-  const cos = entity?.sort((a, b) => {
-    var titleA = a?.title.toUpperCase();
-    var titleB = b?.title.toUpperCase();
-    if(sortDesc){
-      return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
-    }
-    else{
-      return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-    }
-  })
-
-
-
-
-
-  const [showFilter, setShowFilter] = useState<boolean>(false);
-
-  const handleFilter = () => {
-    setShowFilter(!showFilter);
-  };
-
+  useEffect(() => {
+    setEntity(
+      photoList?.slice(0, 30).sort((a, b) => {
+        let titleA = a?.title.toUpperCase();
+        let titleB = b?.title.toUpperCase();
+        if (sortDesc) {
+          return titleA > titleB ? -1 : titleA < titleB ? 1 : 0;
+        } else {
+          return titleA < titleB ? -1 : titleA > titleB ? 1 : 0;
+        }
+      })
+    );
+  }, [photoList, sortDesc]);
 
   return (
     <Wrapper isFullScreen={fullScreen}>
-        <BarWrapper>
-          <FirstBarWrapper>
-            <FirstBarLeftItems>
-              Entities
-              <BarIcon src="./media/cog.svg" />
-            </FirstBarLeftItems>
+      <BarWrapper>
+        <FirstBarWrapper>
+          <FirstBarLeftItems>
+            Entities
+            <BarIcon src="./media/cog.svg" />
+          </FirstBarLeftItems>
 
-            <FirstBarRightItems>
-              <DisplayOptionWrapper onClick={mosaicHandler}>
-                <DisplayOptionIcon src="./media/house2.svg"/>
-                <DisplayOptionText>
-                  {mosaic ? "Mosaic" : "Line"}
-                </DisplayOptionText>
-                <DisplayOptionIconWrapper>
-                  <FirstBarRightScrollIcon src="./media/plus.svg"/>
-                </DisplayOptionIconWrapper>
-              </DisplayOptionWrapper>
-              
-            </FirstBarRightItems>
-            
-          </FirstBarWrapper>
+          <FirstBarRightItems>
+            <DisplayOptionWrapper
+              onClick={() => {
+                setMosaic(!mosaic);
+              }}
+            >
+              <DisplayOptionIcon src="./media/house2.svg" />
+              <DisplayOptionText>
+                {mosaic ? "Mosaic" : "Line"}
+              </DisplayOptionText>
+              <DisplayOptionIconWrapper>
+                <FirstBarRightScrollIcon src="./media/plus.svg" />
+              </DisplayOptionIconWrapper>
+            </DisplayOptionWrapper>
+          </FirstBarRightItems>
+        </FirstBarWrapper>
 
-          <SecondBarWrapper>
-            <FirstBarLeftItems>
-              <AllButtonWrapper>
-                <ItemIcon src="./media/plus.png"/>
-                All
-                <MenuArrowIcon src="./media/arrow-down.png" />
-              </AllButtonWrapper>
+        <SecondBarWrapper>
+          <FirstBarLeftItems>
+            <AllButtonWrapper>
+              <ItemIcon src="./media/plus.png" />
+              All
+              <MenuArrowIcon src="./media/arrow-down.png" />
+            </AllButtonWrapper>
 
-              <SecondBarItem>
-                ...
-              </SecondBarItem>
+            <SecondBarItem>...</SecondBarItem>
 
-              <SecondBarItem onClick={sortHandler}>
-                <ItemIcon src="./media/sort.svg"/>
-                Sort
-              </SecondBarItem>
+            <SecondBarItem
+              onClick={() => {
+                setSortDesc(!sortDesc);
+              }}
+            >
+              <ItemIcon src="./media/sort.svg" />
+              Sort
+            </SecondBarItem>
 
-              <SecondBarItem  onClick={handleFilter}>
-                <ItemIcon src="./media/filter.svg"/>
-                Filter
-              </SecondBarItem>
+            <SecondBarItem
+              onClick={() => {
+                setShowFilter(!showFilter);
+              }}
+            >
+              <ItemIcon src="./media/filter.svg" />
+              Filter
+            </SecondBarItem>
 
-              <SecondBarItem onClick={fullScreenHandler}>
-                <ItemIcon src="./media/full.svg"/>
-              </SecondBarItem>
+            <SecondBarItem
+              onClick={() => {
+                setFullScreen(!fullScreen);
+              }}
+            >
+              <ItemIcon src="./media/full.svg" />
+            </SecondBarItem>
 
-              <SecondBarItem onClick={linkHandler}>
-                <ItemIcon src="./media/share.svg"/>
-                Share
-              </SecondBarItem>
-            </FirstBarLeftItems>
+            <SecondBarItem
+              onClick={() => {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url);
+              }}
+            >
+              <ItemIcon src="./media/share.svg" />
+              Share
+            </SecondBarItem>
+          </FirstBarLeftItems>
 
-            <FirstBarRightItems>
-              <InputWrapper >
-                <FilterInput placeholder="Search..." type="text" value={inputText} onChange={inputHandler}/>
-                <CustomImg src="./media/search.png" />
-              </InputWrapper>
+          <FirstBarRightItems>
+            <InputWrapper>
+              <FilterInput
+                placeholder="Search..."
+                type="text"
+                value={inputText}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const text = e.target.value;
+                  setInputText(text);
+                }}
+              />
+              <CustomImg src="./media/search.png" />
+            </InputWrapper>
 
-              <FollowedWrapper>
-                <FollowIcon src="./media/satellite.svg" />
-                <FollowText>Followed</FollowText>
-                <MenuArrowIcon src="./media/arrow-down.png" />
-              </FollowedWrapper>
-            </FirstBarRightItems>
-          </SecondBarWrapper>
+            <FollowedWrapper>
+              <FollowIcon src="./media/satellite.svg" />
+              <FollowText>Followed</FollowText>
+              <MenuArrowIcon src="./media/arrow-down.png" />
+            </FollowedWrapper>
+          </FirstBarRightItems>
+        </SecondBarWrapper>
 
+        {showFilter === true && <FilterEntity />}
+      </BarWrapper>
 
-          {showFilter === true && <FilterEntity/>   }
-                 
-
-        </BarWrapper>
-
-        <ItemsWrapper isMosaic={mosaic} isFullScreen={fullScreen}>
-          {cos?.map( photo => (
-          photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
-            <ItemWrapper key={photo?.id} isMosaic={mosaic}>
-              <ItemImg src={photo?.url}/>
-              <ItemDetails isMosaic={mosaic}>
-                  <ItemTitle>
-                    {photo?.title}
-                  </ItemTitle>
+      <ItemsWrapper isMosaic={mosaic} isFullScreen={fullScreen}>
+        {entity.map(
+          (photo) =>
+            photo.title.toLowerCase().includes(inputText.toLowerCase()) && (
+              <ItemWrapper key={photo.id} isMosaic={mosaic}>
+                <ItemImg src={photo.url} />
+                <ItemDetails isMosaic={mosaic}>
+                  <ItemTitle>{photo.title}</ItemTitle>
                   <ItemDescription>
                     Caracas 1050, Distrito Capital, Venezuela
                   </ItemDescription>
-              </ItemDetails>
-            </ItemWrapper>
-          ))}
-          {/* {sortDesc ? itemsAsc : itemsDesc} */}
-        </ItemsWrapper>
-
-
+                </ItemDetails>
+              </ItemWrapper>
+            )
+        )}
+      </ItemsWrapper>
     </Wrapper>
   );
-}
+};
 
 export default Entities;
-
-
-
-
-
-        
-  
-  // useEffect( () => {
-  //   setEntity(photoList?.slice(0, 30).sort((a, b) => {
-  //       var titleA = a?.title.toUpperCase();
-  //       var titleB = b?.title.toUpperCase();
-  //       if(sortDesc){
-  //         // console.log(sortDesc)
-  //         return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-  //       }
-  //       else{
-  //         // console.log(sortDesc)
-
-  //         return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-  //       }
-  //     }))
-  // }, [])
-
-
-
-  
-
-  // const itemsAsc = photos?.sort((a, b) => {
-  //   var titleA = a?.title.toUpperCase();
-  //   var titleB = b?.title.toUpperCase();
-  //   return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-  // }).map( photo => (
-  //   photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
-  //   <ItemWrapper key={photo?.id}>
-  //     <ItemImg src={photo?.url}/>
-  //     <ItemDetails>
-  //         <ItemTitle>
-  //           {photo?.title}
-  //         </ItemTitle>
-  //         <ItemDescription>
-  //           Caracas 1050, Distrito Capital, Venezuela
-  //         </ItemDescription>
-  //     </ItemDetails>
-  //   </ItemWrapper>
-  // ))
-
-  // const itemsDesc = photos?.sort((a, b) => {
-  //   var titleA = a?.title.toUpperCase();
-  //   var titleB = b?.title.toUpperCase();
-  //   return (titleA > titleB) ? -1 : (titleA < titleB) ? 1 : 0;
-  // }).map( photo => (
-  //   photo?.title.toLowerCase().includes(inputText.toLowerCase()) &&
-  //   <ItemWrapper key={photo?.id}>
-  //     <ItemImg src={photo?.url}/>
-  //     <ItemDetails>
-  //         <ItemTitle>
-  //           {photo?.title}
-  //         </ItemTitle>
-  //         <ItemDescription>
-  //           Caracas 1050, Distrito Capital, Venezuela
-  //         </ItemDescription>
-  //     </ItemDetails>
-  //   </ItemWrapper>
-  // ))

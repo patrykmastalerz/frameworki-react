@@ -15,3 +15,8 @@ export const getUsers = ():Promise<ISingleUser[]> =>((dispatch: Dispatch) => {
         })
 
 }) as any;
+
+
+export const setUser = (user: string) => ((dispatch: Dispatch) => {
+    return dispatch({ type: actionTypes.SET_USER, user });
+}) as any;

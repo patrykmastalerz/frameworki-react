@@ -2,7 +2,6 @@ import { FC } from "react";
 import styled from "styled-components";
 import { Colors } from "../../styledHelpers/Colors";
 
-
 const WrapperFilter = styled.div`
   background-color: white;
 `;
@@ -35,20 +34,16 @@ const FilterItemIcon = styled.img`
 
 const FilterItemArrow = styled.img`
   width: 10px;
-  /* transform: rotate(45deg); */
 `;
 
 const FilterItemText = styled.span`
-  /* background-color: red; */
   padding: 5px;
-
 `;
 
 const FilterInputRow = styled.input`
   background-color: ${Colors.grey};
   width: 80px;
   height: 20px;
-/* border: 0px; */
 `;
 
 const FilterAddIcon = styled.img`
@@ -60,122 +55,86 @@ const FilterAddText = styled.span`
   padding: 5px;
 `;
 
-
-
 const FilterEntity: FC = () => {
+  return (
+    <WrapperFilter>
+      <FilterTitle>
+        Rows are filtered by the following condiions starting from the top
+      </FilterTitle>
+      <FilterRow>
+        <FilterItemWrapper>
+          <FilterItemIcon src="./media/plus.svg" />
+          <FilterItemText>Where</FilterItemText>
+        </FilterItemWrapper>
 
-  
-    return (
-        <WrapperFilter>
-            <FilterTitle>
-              Rows are filtered by the following condiions starting from the top
-            </FilterTitle>
-            <FilterRow>
-              <FilterItemWrapper>
-                <FilterItemIcon src="./media/plus.svg"/>
-                <FilterItemText>
-                  Where
-                </FilterItemText>
-              </FilterItemWrapper>
+        <FilterItemWrapper>
+          <FilterItemText>Company</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterItemWrapper>
+          <FilterItemText>Contains</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterInputRow type="text" disabled={true} placeholder="Type..." />
+      </FilterRow>
 
-              <FilterItemWrapper>
-                <FilterItemText>
-                  Company
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterItemWrapper>
-                <FilterItemText>
-                  Contains
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterInputRow type="text" disabled={true} placeholder="Type..."/>
-            </FilterRow>
+      <FilterRow>
+        <FilterItemWrapper>
+          <FilterItemIcon src="./media/plus.svg" />
+          <FilterItemText>Where</FilterItemText>
+        </FilterItemWrapper>
 
+        <FilterItemWrapper>
+          <FilterItemText>Status</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterItemWrapper>
+          <FilterItemText>Is</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterInputRow type="text" disabled={true} placeholder="Type..." />
+        <FilterItemWrapper>
+          <FilterItemText>In</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterInputRow type="text" disabled={true} placeholder="Entity..." />
+      </FilterRow>
 
-            <FilterRow>
-              <FilterItemWrapper>
-                <FilterItemIcon src="./media/plus.svg"/>
-                <FilterItemText>
-                  Where
-                </FilterItemText>
-              </FilterItemWrapper>
+      <FilterRow>
+        <FilterItemWrapper>
+          <FilterItemIcon src="./media/plus.svg" />
+          <FilterItemText>And</FilterItemText>
+        </FilterItemWrapper>
 
-              <FilterItemWrapper>
-                <FilterItemText>
-                  Status
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterItemWrapper>
-                <FilterItemText>
-                  Is
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterInputRow type="text" disabled={true} placeholder="Type..."/>
-              <FilterItemWrapper>
-                <FilterItemText>
-                  In
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterInputRow type="text" disabled={true} placeholder="Entity..."/>
+        <FilterItemWrapper>
+          <FilterItemText>Status</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterItemWrapper>
+          <FilterItemText>Ends before</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterInputRow type="text" disabled={true} placeholder="Date" />
+        <FilterItemWrapper>
+          <FilterItemText>In</FilterItemText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+        <FilterInputRow type="text" disabled={true} placeholder="Entity..." />
+      </FilterRow>
 
-            </FilterRow>
+      <FilterRow>
+        <FilterItemWrapper>
+          <FilterAddIcon src="./media/plus.svg" />
+          <FilterAddText>Add filter</FilterAddText>
+        </FilterItemWrapper>
 
-            <FilterRow>
-              <FilterItemWrapper>
-                <FilterItemIcon src="./media/plus.svg"/>
-                <FilterItemText>
-                  And
-                </FilterItemText>
-              </FilterItemWrapper>
+        <FilterItemWrapper>
+          <FilterAddText>choose property</FilterAddText>
+          <FilterItemArrow src="./media/arrow-down.svg" />
+        </FilterItemWrapper>
+      </FilterRow>
+    </WrapperFilter>
+  );
+};
 
-              <FilterItemWrapper>
-                <FilterItemText>
-                  Status
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterItemWrapper>
-                <FilterItemText>
-                  Ends before
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterInputRow type="text" disabled={true} placeholder="Date"/>
-              <FilterItemWrapper>
-                <FilterItemText>
-                  In
-                </FilterItemText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              </FilterItemWrapper>
-              <FilterInputRow type="text" disabled={true} placeholder="Entity..."/>
-
-            </FilterRow>
-
-            <FilterRow>
-              <FilterItemWrapper>
-                <FilterAddIcon src="./media/plus.svg"/>
-                <FilterAddText>
-                  Add filter
-                </FilterAddText>
-              </FilterItemWrapper>
-
-              <FilterItemWrapper>
-                <FilterAddText>
-                  choose property
-                </FilterAddText>
-                <FilterItemArrow src="./media/arrow-down.svg"/>
-              
-              </FilterItemWrapper>
-            </FilterRow>
-
-          </WrapperFilter>
-    );
-  }
-  
-  export default FilterEntity;
-  
+export default FilterEntity;
