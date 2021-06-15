@@ -6,7 +6,7 @@ import {Colors} from '../../styledHelpers/Colors';
 import TopBar from '../TopBar/TopBar';
 import LeftMenu from '../LeftMenu/LeftMenu';
 import Home from '../Home/Home';
-import Profile from './Profile';
+import Profile from '../Profile/Profile';
 import Entities from '../Entity/Entities';
 import WorkspacePage from '../Workspace/WorkspacePage';
 import NotFound from './NotFound';
@@ -42,7 +42,7 @@ const routes = [
     component: Home
   },
   {
-    path: "/profile/:userId",
+    path: "/profile/",
     component: Profile
   },
   {

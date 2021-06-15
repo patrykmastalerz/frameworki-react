@@ -109,13 +109,23 @@ const CustomLink = styled(Link)`
   /* background-color: blue; */
 `
 
+const UserLink = styled(Link)`
+
+
+  /* background-color: blue; */
+`
+
 
 const LeftMenu: FC = () => {
   return (
     <Wrapper>
       	<InnerWrapper>
 				<UserProfileWrapper>
+				<UserLink to="/profile">
+
 					<UserImg/>
+				</UserLink>
+
 					<UserName>
 						Humberta Swift
 					</UserName>
