@@ -16,12 +16,14 @@ import {
   Switch,
   Route,
 } from "react-router-dom"
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../actions/usersActions';
 import { getComments } from '../../actions/commentActions';
 import ResumeWork from '../Home/ResumeWork';
 import { getPhotos } from '../../actions/photoActions';
 import { getPosts } from '../../actions/postActions';
+import { IState } from '../../reducers';
+import { IUserReducer } from '../../reducers/userReducers';
 
 
 const Wrapper = styled.section`
@@ -75,6 +77,7 @@ const MainPage: FC = () => {
     dispatch<GetPhotos>(getPhotos());
     dispatch<GetPosts>(getPosts());
   }, [])
+
 
 
   return (

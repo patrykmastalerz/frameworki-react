@@ -358,21 +358,21 @@ const Entities: FC = () => {
               </SecondBarItem>
 
               <SecondBarItem onClick={sortHandler}>
-                <ItemIcon src="./media/plus.png"/>
+                <ItemIcon src="./media/sort.svg"/>
                 Sort
               </SecondBarItem>
 
               <SecondBarItem  onClick={handleFilter}>
-                <ItemIcon src="./media/plus.png"/>
+                <ItemIcon src="./media/filter.svg"/>
                 Filter
               </SecondBarItem>
 
               <SecondBarItem onClick={fullScreenHandler}>
-                <ItemIcon src="./media/cog.png"/>
+                <ItemIcon src="./media/full.svg"/>
               </SecondBarItem>
 
               <SecondBarItem onClick={linkHandler}>
-                <ItemIcon src="./media/plus.png"/>
+                <ItemIcon src="./media/share.svg"/>
                 Share
               </SecondBarItem>
             </FirstBarLeftItems>
@@ -384,7 +384,7 @@ const Entities: FC = () => {
               </InputWrapper>
 
               <FollowedWrapper>
-                <FollowIcon src="./media/entities.png" />
+                <FollowIcon src="./media/satellite.svg" />
                 <FollowText>Followed</FollowText>
                 <MenuArrowIcon src="./media/arrow-down.png" />
               </FollowedWrapper>

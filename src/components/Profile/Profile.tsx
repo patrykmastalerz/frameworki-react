@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import {Colors} from '../../styledHelpers/Colors';
@@ -119,11 +119,14 @@ const UserDetailsWrapper = styled.div`
   position: relative;
 `
 
-const DetailsIconEdit = styled.img`
-  width: 25px;
+const DetailsIconEdit = styled.button`
+  width: 40px;
+  height: 40px;
   position: absolute;
   right: 10px;
   top: 10px;
+  border: 0px;
+  background-color: transparent;
 `
 
 
@@ -258,7 +261,7 @@ const CorrespondantsButtonWrapper = styled.button`
 
 const ProposalsWrapper = styled.div`
   /* background-color: green; */
-  padding: 20px 10px;
+  padding: 50px 10px;
   border-bottom: 1px solid ${Colors.grey};
 `
 // td
@@ -287,13 +290,13 @@ const CustomTable = styled.table`
 
 const InternalReviewsWrapper = styled.div`
   /* background-color: green; */
-  padding: 20px 10px;
+  padding: 50px 10px;
   border-bottom: 1px solid ${Colors.grey};
 `
 
 const AmountWrapper = styled.div`
   /* background-color: green; */
-  padding: 20px 10px;
+  padding: 50px 10px;
 `
 
 const AmountThead = styled.thead`
@@ -310,6 +313,15 @@ const DetailsTitle = styled.span`
   /* font-size: ${fontSize[16]}; */
   /* font-weight: bold; */
   color: ${Colors.grey}
+`
+const SelectedFile = styled.span`
+  font-size: ${fontSize[16]};
+  font-weight: bold;
+  color: ${Colors.greyLight};
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: #ebebeb;
+  width: 70%;
 `
 
 
@@ -331,22 +343,28 @@ const Profile: FC = () => {
     setUserEditDetails(!userDetailsEdit);
   }
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const selectedFileHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile(e.currentTarget.files![0]);
+  }
+
   return (
     <Wrapper>
         {console.log(userEdit)}
         <TopBar>
           <TopBarButtonWrapper>
-            <TopBarIcon src="./media/entities2.png"/>
+            <TopBarIcon src="./media/message.svg"/>
             Message
           </TopBarButtonWrapper>
 
           <TopBarButtonWrapper>
-            <TopBarIcon src="./media/entities2.png"/>
+            <TopBarIcon src="./media/note.svg"/>
             Create a request
           </TopBarButtonWrapper>
 
           <TopBarButtonWrapper>
-            <TopBarIcon src="./media/entities2.png"/>
+            <TopBarIcon src="./media/cluster.svg"/>
             Add to a cluster
           </TopBarButtonWrapper>
 
@@ -366,7 +384,7 @@ const Profile: FC = () => {
               <TopProfileInput isEdit={userEdit} disabled={userEdit ? false : true} defaultValue="Profile" />
             </LeftInputs>
             <RightInputs>
-              <TopBarIcon onClick={userEditHandler} src="./media/settings.svg"/>
+              <TopBarIcon onClick={userEditHandler} src="./media/edit.svg"/>
               <TopProfileInput isEdit={userEdit} disabled={userEdit ? false : true} defaultValue="fasdfsaf@gmail.com" />
               <TopProfileInput isEdit={userEdit} disabled={userEdit ? false : true} defaultValue="03 3213 312312" />
             </RightInputs>
@@ -374,7 +392,10 @@ const Profile: FC = () => {
         </UserWrapper>
 
         <UserDetailsWrapper>
-          <DetailsIconEdit onClick={userDetailsEditHandler}  src="./media/settings.svg"/>
+          <DetailsIconEdit onClick={userDetailsEditHandler}  >
+            <img src="./media/edit.svg" alt="" />
+          </DetailsIconEdit>
+
           <TitleDetails>
             <SubTitle>
               Expertise
@@ -430,8 +451,18 @@ const Profile: FC = () => {
               Terms and conditions
             </ProfileTitle>
             <ProfileInput isDetailsEdit={userDetailsEdit} disabled={userDetailsEdit ? false : true} defaultValue="Monthly 10k retainer - see with Jeanny Smith "/>
-
-            <FileInput isDetailsEdit={userDetailsEdit} disabled={userDetailsEdit ? false : true}  type="file" />
+            
+            {userDetailsEdit ?
+              <FileInput 
+                isDetailsEdit={userDetailsEdit}
+                onChange={selectedFileHandler} 
+                type="file" /> : 
+                <SelectedFile>
+                  {selectedFile?.name === undefined ? "Nie wybrano" : selectedFile?.name}
+                </SelectedFile>
+              
+              }
+            {console.log(selectedFile?.name)}
 
             <ProfileTitle>
               Services and projects
@@ -451,12 +482,12 @@ const Profile: FC = () => {
               <CorrespondantsName  isDetailsEdit={userDetailsEdit} disabled={userDetailsEdit ? false : true}  defaultValue="Firstname Lastname" />
 
               <CorrespondantsButtonWrapper>
-                <TopBarIcon src="./media/entities2.png"/>
+                <TopBarIcon src="./media/message.svg"/>
                 Message
               </CorrespondantsButtonWrapper>
 
               <CorrespondantsButtonWrapper>
-                <TopBarIcon src="./media/entities2.png"/>
+                <TopBarIcon src="./media/people.png"/>
                 Profile
               </CorrespondantsButtonWrapper>
             </CorrespondantsWrapper>
@@ -466,12 +497,12 @@ const Profile: FC = () => {
               <CorrespondantsName  isDetailsEdit={userDetailsEdit} disabled={userDetailsEdit ? false : true}  defaultValue="Firstname Lastname" />
 
               <CorrespondantsButtonWrapper>
-                <TopBarIcon src="./media/entities2.png"/>
+                <TopBarIcon src="./media/message.svg"/>
                 Message
               </CorrespondantsButtonWrapper>
 
               <CorrespondantsButtonWrapper>
-                <TopBarIcon src="./media/entities2.png"/>
+                <TopBarIcon src="./media/people.png"/>
                 Profile
               </CorrespondantsButtonWrapper>
             </CorrespondantsWrapper>

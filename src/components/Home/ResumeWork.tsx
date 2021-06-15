@@ -73,6 +73,7 @@ const FollowedWrapper = styled.button`
 `
 
 const FollowIcon = styled.img`
+    width: 25px;
 `
 
 const MenuArrowIcon = styled.img`
@@ -292,7 +293,7 @@ const ResumeWork: FC = () => {
                     <CustomImg src="./media/search.png" />
                 </InputWrapper>
                 <FollowedWrapper onClick={filterHandler}>
-                    <FollowIcon src="./media/entities.png" />
+                    <FollowIcon src="./media/satellite.svg" />
                     {myfilter ? <FollowText>Followed</FollowText> : <FollowText>My</FollowText>}
                     <MenuArrowIcon src="./media/arrow-down.png" />
                 </FollowedWrapper>

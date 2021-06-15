@@ -239,6 +239,7 @@ const FollowedWrapper = styled.button`
 `
 
 const FollowIcon = styled.img`
+    width: 25px;
 `
 
 const MenuArrowIcon = styled.img`
@@ -477,7 +478,7 @@ const WorkspacePage: FC = (props) => {
                                 <CustomImg src="./media/search.png" />
                             </InputWrapper>
                             <FollowedWrapper onClick={filterHandler}>
-                                <FollowIcon src="./media/entities.png" />
+                                <FollowIcon src="./media/satellite.svg" />
                                 {myfilter ? <FollowText>Followed</FollowText> : <FollowText>My</FollowText>}
                                 <MenuArrowIcon src="./media/arrow-down.png" />
                             </FollowedWrapper>
@@ -537,13 +538,10 @@ const WorkspacePage: FC = (props) => {
                         </ResumeDescription>
                         <ResumeDetails>
                             <SubWrapper>
-                                <DetailsIcon src="./media/entities.png"/>
-                                <SubText>Subsid. corp.</SubText>
-                            </SubWrapper>
-                            <SubWrapper>
-                                <DetailsIcon src="./media/entities.png"/>
-                                <SubText>Client contract</SubText>
-                            </SubWrapper>
+                                <TopBarItemIcon src="./media/entities.png" />
+                                SARP
+                                </SubWrapper>
+                            
                             <UpdateDate>
                                 Updates 3 days ago by {item.userName}
                                 </UpdateDate>
