@@ -111,25 +111,7 @@ interface IPosts {
   avatarUrl: string;
 }
 
-// type GetUsers = ReturnType<typeof getUsers>;
-// type GetComments = ReturnType<typeof getComments>;
-// type GetPhotos = ReturnType<typeof getPhotos>;
-// type GetPosts = ReturnType<typeof getPosts>;
-
-
-
-
 const Home: FC = () => {
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch<GetUsers>(getUsers());
-  //   dispatch<GetComments>(getComments());
-  //   dispatch<GetPhotos>(getPhotos());
-  //   dispatch<GetPosts>(getPosts());
-  // }, []);
-
-
   const { photoList } = useSelector<IState, IPhotoReducer>((state) => ({
     ...state.photos,
   }));
@@ -159,7 +141,7 @@ const Home: FC = () => {
             avatarUrl: avatar?.url,
           } as IPosts;
         })
-        .splice(0, 4),
+        .splice(0, 4)
     );
   }, [postList, usersList, photoList]);
 
@@ -180,7 +162,7 @@ const Home: FC = () => {
 
                 <PublicationsDetailsWrapper>
                   <UpdateDate>7 jan 2020</UpdateDate>
-                  <ProfileAvatarImg src={item.avatarUrl}/>
+                  <ProfileAvatarImg src={item.avatarUrl} />
                   <UserName>{item.userName}</UserName>
                 </PublicationsDetailsWrapper>
               </PublicationDescriptionWrapper>
