@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -110,6 +110,8 @@ interface UserAvatar {
 }
 
 const LeftMenu: FC = () => {
+  const [mergedAvatar, setMergedAvatar] = useState<UserAvatar[]>([]);
+
   const { user, usersList } = useSelector<IState, IUserReducer>((state) => ({
     ...state.users,
   }));
@@ -118,26 +120,26 @@ const LeftMenu: FC = () => {
     ...state.photos,
   }));
 
-  const loggedUser = useMemo(
-    () =>
+  useEffect(() => {
+    setMergedAvatar(
       usersList
-        ?.map((p) => {
-          const photo = photoList?.find((u) => u.id === p.id);
+      ?.map((p) => {
+        const photo = photoList?.find((u) => u.id === p.id);
 
-          return {
-            avatar: photo?.url,
-          } as UserAvatar;
-        })
-        .splice(0, 1),
-    [usersList, photoList]
-  );
+        return {
+          avatar: photo?.url,
+        } as UserAvatar;
+      })
+      .splice(0, 1)
+    );
+  }, [usersList, photoList]);
 
   return (
     <Wrapper>
       <InnerWrapper>
         <UserProfileWrapper>
           <UserLink to="/profile">
-            <UserImg src={loggedUser[0]?.avatar}/>
+            <UserImg src={mergedAvatar[0]?.avatar}/>
           </UserLink>
 
           <UserName>{user}</UserName>

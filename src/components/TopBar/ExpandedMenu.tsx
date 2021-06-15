@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useMemo, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -90,6 +90,7 @@ interface UserAvatar {
 }
 
 const ExpandedMenu: FC = () => {
+  const [mergedAvatar, setMergedAvatar] = useState<UserAvatar[]>([]);
   const [inputText, setInputText] = useState<string>("");
   const { user, usersList } = useSelector<IState, IUserReducer>((state) => ({
     ...state.users,
@@ -104,19 +105,20 @@ const ExpandedMenu: FC = () => {
     setInputText(text);
   };
 
-  const loggedUser = useMemo(
-    () =>
+  useEffect(() => {
+    setMergedAvatar(
       usersList
-        ?.map((p) => {
-          const photo = photoList?.find((u) => u.id === p.id);
+      ?.map((p) => {
+        const photo = photoList?.find((u) => u.id === p.id);
 
-          return {
-            avatar: photo?.url,
-          } as UserAvatar;
-        })
-        .splice(0, 1),
-    [usersList, photoList]
-  );
+        return {
+          avatar: photo?.url,
+        } as UserAvatar;
+      })
+      .splice(0, 1)
+    );
+  }, [usersList, photoList]);
+
 
   return (
     <Wrapper>
@@ -266,7 +268,7 @@ const ExpandedMenu: FC = () => {
         <ul>
           <li>
             <CustomLink to="/Profile">
-              <UserAvatar src={loggedUser[0]?.avatar} />
+              <UserAvatar src={mergedAvatar[0]?.avatar} />
               {user}
             </CustomLink>
           </li>
