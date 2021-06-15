@@ -374,11 +374,11 @@ const WorkspacePage: FC = () => {
         .filter((x) => (myfilter ? x.postId === x.userId : x.postId === 1))
         .slice(currentPage, currentPage + 10)
     );
-  }, [commentList,usersList, myfilter]);
+  }, [commentList,usersList, myfilter, currentPage]);
 
   return (
     <>
-      {console.log(location.state)}
+      {console.log(mergedComments)}
       <Wrapper>
         <HeaderWrapper>
           <HeaderIMG>
