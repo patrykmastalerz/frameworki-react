@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { Colors } from "../../styledHelpers/Colors";
 import { Wrapper } from "../../styledHelpers/Components";
+import { fontSize } from "../../styledHelpers/FontSizes";
 import ExpandedMenu from "./ExpandedMenu";
 
 const Wrapper2 = styled(Wrapper)`
@@ -27,12 +28,29 @@ const LogoImg = styled.img`
 `;
 
 const ImgBackground = styled.div<{ showBg: boolean }>`
+  position: relative;
+  background: ${Colors.iconBackground};
+  border-radius: 50%;
+
   ${(props) =>
     props.showBg &&
     css`
-      background: ${Colors.iconBackground};
-      border-radius: 50%;
       margin-left: 5px;
+      &:after {
+      content: "2";
+      padding: 6px;
+      font-size: ${fontSize[12]};
+      position: absolute;
+      z-index: 3;
+      top: -5px;
+      right: -8px;
+      border-radius: 50%;
+      color: white;
+      background: #3e00e9;
+      width: 10px;
+      height: 10px;
+      text-align:center;
+  }
     `}
 `;
 
@@ -143,10 +161,10 @@ const TopBar: FC = () => {
         </InputWrapper>
         <RightIcons>
           <CustomImg src="./media/house.png" />
-          <ImgBackground showBg>
+          <ImgBackground showBg={true}>
             <CustomImg src="./media/comments.png" />
           </ImgBackground>
-          <ImgBackground showBg={false}>
+          <ImgBackground showBg={true}>
             <CustomImg src="./media/bell.png" />
           </ImgBackground>
         </RightIcons>
