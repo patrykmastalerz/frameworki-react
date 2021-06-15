@@ -6,7 +6,6 @@ import { IState } from "../../reducers";
 import { IUserReducer } from "../../reducers/userReducers";
 import { Colors } from "../../styledHelpers/Colors";
 import { fontSize } from "../../styledHelpers/FontSizes";
-import * as actionTypes from "../../actions/actionTypes/userTypes";
 import { setUser } from "../../actions/usersActions";
 import { IPhotoReducer } from "../../reducers/photoReducers";
 
@@ -272,6 +271,7 @@ const CustomTable = styled.table`
 const InternalReviewsWrapper = styled.div`
   padding: 50px 10px;
   border-bottom: 1px solid ${Colors.grey};
+  position: relative;
 `;
 
 const AmountWrapper = styled.div`
@@ -301,6 +301,33 @@ const SelectedFile = styled.span`
   width: 70%;
 `;
 
+const CustromSelect = styled.select`
+  padding: 5px;
+  background-color: #eceef7;
+  border: 0px;
+  color: #bbc6f7;
+`;
+
+const DetailSelect = styled.select<{ isEdit: boolean }>`
+  padding: 5px;
+  background-color: white;
+  border: 0px;
+  width: 130px;
+
+  ${(props) =>
+    props.isEdit &&
+    css`
+      border: 1px solid ${Colors.grey};
+    `}
+`;
+
+const CustomLink = styled(Link)`
+  color: #bbc6f7;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+`;
+
 const Profile: FC = () => {
   const [userEdit, setUserEdit] = useState<boolean>(false);
   const [userDetailsEdit, setUserEditDetails] = useState<boolean>(false);
@@ -318,7 +345,6 @@ const Profile: FC = () => {
 
   return (
     <Wrapper>
-      {console.log(userEdit)}
       <TopBar>
         <TopBarButtonWrapper>
           <TopBarIcon src="./media/message.svg" />
@@ -341,7 +367,7 @@ const Profile: FC = () => {
       </TopBar>
       <UserWrapper>
         <AvatarWrapper>
-          <Avatar src={photoList[0]?.url}/>
+          <Avatar src={photoList[0]?.url} />
           See profile
         </AvatarWrapper>
         <DetailsWrapper>
@@ -359,11 +385,15 @@ const Profile: FC = () => {
               disabled={userEdit ? false : true}
               defaultValue={"New-York"}
             />
-            <TopProfileInput
-              isEdit={userEdit}
+            <DetailSelect
+              name="profile"
               disabled={userEdit ? false : true}
-              defaultValue="Profile"
-            />
+              isEdit={userEdit}
+            >
+              <option value="Profile">Profile</option>
+              <option value="Admin">Admin</option>
+              <option value="Normal">Normal</option>
+            </DetailSelect>
           </LeftInputs>
           <RightInputs>
             <TopBarIcon
@@ -375,7 +405,7 @@ const Profile: FC = () => {
             <TopProfileInput
               isEdit={userEdit}
               disabled={userEdit ? false : true}
-              defaultValue={usersList[0]?.emails}
+              defaultValue={usersList[0]?.email}
             />
             <TopProfileInput
               isEdit={userEdit}
@@ -412,12 +442,12 @@ const Profile: FC = () => {
             <InputDetails
               isDetailsEdit={userDetailsEdit}
               disabled={userDetailsEdit ? false : true}
-              value="Cross border operation"
+              defaultValue="Cross border operation"
             />
             <InputDetails
               isDetailsEdit={userDetailsEdit}
               disabled={userDetailsEdit ? false : true}
-              value="Transaction over 500"
+              defaultValue="Transaction over 500"
             />
           </InputWrapperDetails>
         </TitleDetails>
@@ -428,12 +458,12 @@ const Profile: FC = () => {
             <InputDetails
               isDetailsEdit={userDetailsEdit}
               disabled={userDetailsEdit ? false : true}
-              value="Paris bar association"
+              defaultValue="Paris bar association"
             />
             <InputDetails
               isDetailsEdit={userDetailsEdit}
               disabled={userDetailsEdit ? false : true}
-              value="Tunisian bar assocation"
+              defaultValue="Tunisian bar assocation"
             />
           </InputWrapperDetails>
         </TitleDetails>
@@ -442,11 +472,14 @@ const Profile: FC = () => {
           <SubTitle>Counties</SubTitle>
 
           <InputWrapperDetails>
-            <InputDetails
-              isDetailsEdit={userDetailsEdit}
+            <CustromSelect
+              name="cities"
               disabled={userDetailsEdit ? false : true}
-              value="Tunisia"
-            />
+            >
+              <option value="Poland">Poland</option>
+              <option value="Russian">Russian</option>
+              <option value="Ukraine">Ukraine</option>
+            </CustromSelect>
           </InputWrapperDetails>
         </TitleDetails>
       </UserDetailsWrapper>
@@ -456,11 +489,22 @@ const Profile: FC = () => {
 
         <ProfileTitleWrapper>
           <ProfileTitle>Hourly fee</ProfileTitle>
-          <MoneyInput
+
+          <DetailSelect
+            name="money"
+            disabled={userDetailsEdit ? false : true}
+            isEdit={userEdit}
+          >
+            <option value="500">500</option>
+            <option value="1500">1500</option>
+            <option value="800">800</option>
+          </DetailSelect>
+
+          {/* <MoneyInput
             isDetailsEdit={userDetailsEdit}
             disabled={userDetailsEdit ? false : true}
             defaultValue="610zl "
-          />
+          /> */}
 
           <ProfileTitle>Terms and conditions</ProfileTitle>
           <ProfileInput
@@ -601,7 +645,7 @@ const Profile: FC = () => {
             </tr>
           </tbody>
         </CustomTable>
-        <Link to="/NotFound">See more reviews</Link>
+        <CustomLink to="/NotFound">See more reviews</CustomLink>
       </InternalReviewsWrapper>
 
       <AmountWrapper>

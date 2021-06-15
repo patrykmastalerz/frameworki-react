@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -85,8 +85,13 @@ const CustomLink = styled(Link)`
   align-items: center;
 `;
 
+interface UserAvatar {
+  avatar: string;
+}
+
 const ExpandedMenu: FC = () => {
-  const { usersList } = useSelector<IState, IUserReducer>((state) => ({
+  const [inputText, setInputText] = useState<string>("");
+  const { user, usersList } = useSelector<IState, IUserReducer>((state) => ({
     ...state.users,
   }));
 
@@ -94,16 +99,27 @@ const ExpandedMenu: FC = () => {
     ...state.photos,
   }));
 
-  const [inputText, setInputText] = useState<string>("");
-
   const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     setInputText(text);
   };
 
+  const loggedUser = useMemo(
+    () =>
+      usersList
+        ?.map((p) => {
+          const photo = photoList?.find((u) => u.id === p.id);
+
+          return {
+            avatar: photo?.url,
+          } as UserAvatar;
+        })
+        .splice(0, 1),
+    [usersList]
+  );
+
   return (
     <Wrapper>
-      {console.log(usersList)}
       <FilterInput
         placeholder="Filter..."
         value={inputText}
@@ -249,9 +265,9 @@ const ExpandedMenu: FC = () => {
         <Header>Account</Header>
         <ul>
           <li>
-            <CustomLink to="/NotFound">
-              <UserAvatar src={photoList[0]?.url} />
-              {/* {usersList[0].name} */}
+            <CustomLink to="/Profile">
+              <UserAvatar src={loggedUser[0]?.avatar} />
+              {user}
             </CustomLink>
           </li>
           <li>

@@ -75,7 +75,7 @@ const PublicationsDetailsWrapper = styled.div`
   align-items: center;
 `;
 
-const ProfileAvatarImg = styled.div`
+const ProfileAvatarImg = styled.img`
   width: 15px;
   height: 15px;
   margin: 0px 5px;
@@ -104,6 +104,7 @@ interface IPosts {
   postBody: string;
   userName: string;
   photoUrl: string;
+  avatarUrl: string;
 }
 
 const Home: FC = () => {
@@ -125,11 +126,13 @@ const Home: FC = () => {
         ?.map((p) => {
           const user = usersList?.find((u) => u.id === p.userId);
           const photo = photoList?.find((u) => u.id === p.id);
+          const avatar = photoList?.find((u) => u.id === user?.id);
 
           return {
             postBody: p.body,
             userName: user?.name,
             photoUrl: photo?.url,
+            avatarUrl: avatar?.url,
           } as IPosts;
         })
         .splice(0, 4),
@@ -153,7 +156,7 @@ const Home: FC = () => {
 
                 <PublicationsDetailsWrapper>
                   <UpdateDate>7 jan 2020</UpdateDate>
-                  <ProfileAvatarImg />
+                  <ProfileAvatarImg src={item.avatarUrl}/>
                   <UserName>{item.userName}</UserName>
                 </PublicationsDetailsWrapper>
               </PublicationDescriptionWrapper>

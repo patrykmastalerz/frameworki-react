@@ -2,7 +2,7 @@ export interface ISingleUser {
     id: number;
     name: string;
     username: string;
-    emails: string;
+    email: string;
     address: {
         street: string;
         suite: string;

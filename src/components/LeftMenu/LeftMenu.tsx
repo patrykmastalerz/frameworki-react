@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IState } from "../../reducers";
+import { IPhotoReducer } from "../../reducers/photoReducers";
 import { IUserReducer } from "../../reducers/userReducers";
 import { Colors } from "../../styledHelpers/Colors";
 import { ColumnWrapper } from "../../styledHelpers/ColumnWrapper";
@@ -21,7 +22,7 @@ const InnerWrapper = styled(ColumnWrapper)`
 
 const CustomImg = styled.img``;
 
-const UserImg = styled.div`
+const UserImg = styled.img`
   width: 60px;
   height: 60px;
   background: blue;
@@ -104,17 +105,40 @@ const CustomLink = styled(Link)`
 
 const UserLink = styled(Link)``;
 
+interface UserAvatar {
+  avatar: string;
+
+}
+
 const LeftMenu: FC = () => {
-  const { user } = useSelector<IState, IUserReducer>((state) => ({
+  const { user, usersList } = useSelector<IState, IUserReducer>((state) => ({
     ...state.users,
   }));
+
+  const { photoList } = useSelector<IState, IPhotoReducer>((state) => ({
+    ...state.photos,
+  }));
+
+  const loggedUser = useMemo(
+    () =>
+      usersList
+        ?.map((p) => {
+          const photo = photoList?.find((u) => u.id === p.id);
+
+          return {
+            avatar: photo?.url,
+          } as UserAvatar;
+        })
+        .splice(0, 1),
+    [usersList]
+  );
 
   return (
     <Wrapper>
       <InnerWrapper>
         <UserProfileWrapper>
           <UserLink to="/profile">
-            <UserImg />
+            <UserImg src={loggedUser[0]?.avatar}/>
           </UserLink>
 
           <UserName>{user}</UserName>
