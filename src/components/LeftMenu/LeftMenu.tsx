@@ -25,7 +25,6 @@ const CustomImg = styled.img``;
 const UserImg = styled.img`
   width: 60px;
   height: 60px;
-  background: blue;
   border-radius: 50%;
 `;
 
