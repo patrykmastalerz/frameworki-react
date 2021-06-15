@@ -48,7 +48,6 @@ const ImgBackground = styled.div<{ showBg: boolean }>`
       color: white;
       background: #3e00e9;
       width: 10px;
-      height: 10px;
       text-align:center;
   }
     `}
