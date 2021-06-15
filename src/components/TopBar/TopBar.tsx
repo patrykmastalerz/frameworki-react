@@ -73,7 +73,7 @@ const CustomInput = styled.input`
 `;
 
 const RightIcons = styled.div`
-  display: inline-flexbox;
+  display: flex;
   justify-content: center;
   align-items: center;
 `;
@@ -159,13 +159,19 @@ const TopBar: FC = () => {
           <CustomImg src="./media/search.png" />
         </InputWrapper>
         <RightIcons>
-          <CustomImg src="./media/house.png" />
-          <ImgBackground showBg={true}>
-            <CustomImg src="./media/comments.png" />
-          </ImgBackground>
-          <ImgBackground showBg={true}>
-            <CustomImg src="./media/bell.png" />
-          </ImgBackground>
+          <Link to="/">
+            <CustomImg src="./media/house.png" />
+          </Link>
+          <Link to="/NotFound">
+            <ImgBackground showBg={true}>
+              <CustomImg src="./media/comments.png" />
+            </ImgBackground>
+          </Link>
+          <Link to="/NotFound">
+            <ImgBackground showBg={true}>
+              <CustomImg src="./media/bell.png" />
+            </ImgBackground>
+          </Link>
         </RightIcons>
       </InnerWrapper>
     </Wrapper2>
