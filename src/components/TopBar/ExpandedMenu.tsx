@@ -102,23 +102,23 @@ const ExpandedMenu: FC = () => {
 
   const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
+
     setInputText(text);
   };
 
   useEffect(() => {
     setMergedAvatar(
       usersList
-      ?.map((p) => {
-        const photo = photoList?.find((u) => u.id === p.id);
+        ?.map((p) => {
+          const photo = photoList?.find((u) => u.id === p.id);
 
-        return {
-          avatar: photo?.url,
-        } as UserAvatar;
-      })
-      .splice(0, 1)
+          return {
+            avatar: photo?.url,
+          } as UserAvatar;
+        })
+        .splice(0, 1)
     );
   }, [usersList, photoList]);
-
 
   return (
     <Wrapper>

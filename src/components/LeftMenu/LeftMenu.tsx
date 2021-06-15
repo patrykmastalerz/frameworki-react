@@ -106,7 +106,6 @@ const UserLink = styled(Link)``;
 
 interface UserAvatar {
   avatar: string;
-
 }
 
 const LeftMenu: FC = () => {
@@ -123,14 +122,14 @@ const LeftMenu: FC = () => {
   useEffect(() => {
     setMergedAvatar(
       usersList
-      ?.map((p) => {
-        const photo = photoList?.find((u) => u.id === p.id);
+        ?.map((p) => {
+          const photo = photoList?.find((u) => u.id === p.id);
 
-        return {
-          avatar: photo?.url,
-        } as UserAvatar;
-      })
-      .splice(0, 1)
+          return {
+            avatar: photo?.url,
+          } as UserAvatar;
+        })
+        .splice(0, 1)
     );
   }, [usersList, photoList]);
 
@@ -139,7 +138,7 @@ const LeftMenu: FC = () => {
       <InnerWrapper>
         <UserProfileWrapper>
           <UserLink to="/profile">
-            <UserImg src={mergedAvatar[0]?.avatar}/>
+            <UserImg src={mergedAvatar[0]?.avatar} />
           </UserLink>
 
           <UserName>{user}</UserName>
